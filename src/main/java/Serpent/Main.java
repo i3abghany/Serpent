@@ -49,7 +49,7 @@ public class Main {
                 Runtime.getRuntime().exec("cls");
             }
         } else {
-            diagnostics.add("Unknown Command");
+            diagnostics.add("Unknown Command: " + line);
         }
     }
 }
