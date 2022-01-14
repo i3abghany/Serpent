@@ -6,6 +6,7 @@ public class Parser {
     private SyntaxToken[] tokenArray;
     private final String text;
     private int position;
+    private final ArrayList<String> diagnostics = new ArrayList<>();
 
     public Parser(String text) {
         this.text = text;
@@ -14,7 +15,8 @@ public class Parser {
 
     public SyntaxTree parse() {
         ExpressionSyntax expressionSyntax = parseExpression(0);
-        return new SyntaxTree(expressionSyntax);
+        SyntaxToken eof = matchToken(SyntaxKind.EndOfFileToken);
+        return new SyntaxTree(expressionSyntax, eof, diagnostics);
     }
 
     private ExpressionSyntax parsePrimaryExpression() {
@@ -98,6 +100,7 @@ public class Parser {
             return nextToken();
         }
 
+        diagnostics.add("Expected: " + kind + ", but found: " + current().getKind());
         return new SyntaxToken(current().getPosition(), kind, null, null);
     }
 }
