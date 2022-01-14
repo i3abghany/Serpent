@@ -21,6 +21,12 @@ public class Evaluator {
             return (int) ne.getValue();
         } else if (node instanceof ParenthesizedExpression pe) {
             return evaluateExpression(pe.getExpression());
+        } else if (node instanceof UnaryExpression ue) {
+            return switch (ue.getOperatorToken().getKind()) {
+                case PlusToken -> evaluateExpression(ue.getExpression());
+                case MinusToken -> -evaluateExpression(ue.getExpression());
+                default -> 0;
+            };
         } else if (node instanceof BinaryExpression be) {
             int left = evaluateExpression(be.getLeft());
             int right = evaluateExpression(be.getRight());
