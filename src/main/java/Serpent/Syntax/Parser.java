@@ -69,6 +69,7 @@ public class Parser {
                 tokens.add(token);
         } while (token.getKind() != SyntaxKind.EndOfFileToken);
 
+        diagnostics.addAll(lexer.getDiagnostics());
         this.tokenArray = tokens.toArray(SyntaxToken[]::new);
     }
 
@@ -100,7 +101,7 @@ public class Parser {
             return nextToken();
         }
 
-        diagnostics.add("Expected: " + kind + ", but found: " + current().getKind());
+        diagnostics.add("[Parser Error]: Expected: " + kind + ", but found: " + current().getKind());
         return new SyntaxToken(current().getPosition(), kind, null, null);
     }
 }

@@ -1,12 +1,19 @@
 package Serpent.Syntax;
 
+import java.util.ArrayList;
+
 public class Lexer {
     private final String text;
     private int position;
+    private final ArrayList<String> diagnostics = new ArrayList<>();
 
     public Lexer(String text) {
         this.text = text;
         this.position = 0;
+    }
+
+    public ArrayList<String> getDiagnostics() {
+        return diagnostics;
     }
 
     private void next() {
@@ -50,6 +57,10 @@ public class Lexer {
             case ')' -> SyntaxKind.CloseParenthesisToken;
             default -> SyntaxKind.BadToken;
         };
+
+        if (kind == SyntaxKind.BadToken) {
+            diagnostics.add("[Lexer Error]: Unexpected token: " + current());
+        }
 
         SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), null);
         position++;

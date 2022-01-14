@@ -1,5 +1,8 @@
 package Serpent;
 
+import Serpent.Syntax.Parser;
+import Serpent.Syntax.SyntaxTree;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -18,14 +21,23 @@ public class Main {
 
             if (line.startsWith(commandPrefix)) {
                 handleCommand(line);
+                continue;
             }
+
+            Parser parser = new Parser(line);
+            SyntaxTree ast = parser.parse();
+            diagnostics.addAll(ast.getDiagnostics());
 
             if (!diagnostics.isEmpty()) {
                 for (String d : diagnostics) {
                     System.out.println(d);
                 }
                 diagnostics.clear();
+                continue;
             }
+
+            Evaluator evaluator = new Evaluator(ast);
+            System.out.println(evaluator.evaluate());
         }
     }
 
