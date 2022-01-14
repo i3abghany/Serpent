@@ -33,8 +33,13 @@ public class SyntaxToken extends SyntaxNode {
         return position;
     }
 
-    public TokenKind getKind() {
+    public SyntaxKind getKind() {
         return kind;
+    }
+
+    @Override
+    public ArrayList<SyntaxNode> getChildren() {
+        return null;
     }
 
     public String getText() {

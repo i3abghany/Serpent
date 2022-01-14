@@ -16,5 +16,9 @@ public enum SyntaxKind {
     FalseKeyword,
     TrueKeyword,
 
+    NumberExpression,
+    BinaryExpression,
+    ParenthesizedExpression,
+
     EndOfFileToken,
 }
