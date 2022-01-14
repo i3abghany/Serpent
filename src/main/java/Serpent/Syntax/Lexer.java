@@ -1,4 +1,4 @@
-package Serpent;
+package Serpent.Syntax;
 
 public class Lexer {
     private final String text;

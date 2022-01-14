@@ -1,5 +1,7 @@
 package Serpent;
 
+import Serpent.Syntax.*;
+
 public class Evaluator {
     private final SyntaxTree ast;
 

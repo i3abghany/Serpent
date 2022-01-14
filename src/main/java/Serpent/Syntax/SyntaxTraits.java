@@ -1,4 +1,4 @@
-package Serpent;
+package Serpent.Syntax;
 
 public final class SyntaxTraits {
     public static SyntaxKind getTextualTokenKind(String text) {

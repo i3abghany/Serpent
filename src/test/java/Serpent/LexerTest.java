@@ -1,5 +1,8 @@
 package Serpent;
 
+import Serpent.Syntax.Lexer;
+import Serpent.Syntax.SyntaxKind;
+import Serpent.Syntax.SyntaxToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

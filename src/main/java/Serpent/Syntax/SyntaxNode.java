@@ -1,4 +1,4 @@
-package Serpent;
+package Serpent.Syntax;
 
 import java.util.List;
 

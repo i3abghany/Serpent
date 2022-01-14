@@ -1,4 +1,4 @@
-package Serpent;
+package Serpent.Syntax;
 
 public enum SyntaxKind {
     BadToken,
