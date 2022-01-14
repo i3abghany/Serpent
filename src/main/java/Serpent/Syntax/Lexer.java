@@ -62,7 +62,8 @@ public class Lexer {
             diagnostics.add("[Lexer Error]: Unexpected token: " + current());
         }
 
-        SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), null);
+        SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), Character.toString(current()));
+
         position++;
         return ret;
     }
