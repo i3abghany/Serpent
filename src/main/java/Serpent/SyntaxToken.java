@@ -1,10 +1,11 @@
 package Serpent;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class SyntaxToken {
+public class SyntaxToken extends SyntaxNode {
     private final int position;
-    private final TokenKind kind;
+    private final SyntaxKind kind;
     private final String text;
     private final Object value;
 
@@ -21,7 +22,7 @@ public class SyntaxToken {
         return Objects.hash(position, kind, text, value);
     }
 
-    public SyntaxToken(int position, TokenKind kind, String text, Object value) {
+    public SyntaxToken(int position, SyntaxKind kind, String text, Object value) {
         this.position = position;
         this.kind = kind;
         this.text = text;

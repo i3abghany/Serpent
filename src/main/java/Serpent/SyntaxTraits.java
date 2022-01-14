@@ -1,11 +1,11 @@
 package Serpent;
 
 public final class SyntaxTraits {
-    public static TokenKind getTextualTokenKind(String text) {
+    public static SyntaxKind getTextualTokenKind(String text) {
         return switch (text) {
-            case "true" -> TokenKind.TrueKeyword;
-            case "false" -> TokenKind.FalseKeyword;
-            default -> TokenKind.IdentifierToken;
+            case "true" -> SyntaxKind.TrueKeyword;
+            case "false" -> SyntaxKind.FalseKeyword;
+            default -> SyntaxKind.IdentifierToken;
         };
     }
 }

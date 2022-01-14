@@ -30,7 +30,7 @@ public class Lexer {
 
     public SyntaxToken nextToken() {
         if (position >= text.length())
-            return new SyntaxToken(position, TokenKind.EndOfFileToken, "\0", null);
+            return new SyntaxToken(position, SyntaxKind.EndOfFileToken, "\0", null);
 
         if (Character.isDigit(current())) {
             return lexInteger();
@@ -40,15 +40,15 @@ public class Lexer {
             return lexTextualToken();
         }
 
-        TokenKind kind = switch (current()) {
-            case '*' -> TokenKind.StarToken;
-            case '+' -> TokenKind.PlusToken;
-            case '-' -> TokenKind.MinusToken;
-            case '/' -> TokenKind.SlashToken;
-            case '^' -> TokenKind.CaretToken;
-            case '(' -> TokenKind.OpenParenthesisToken;
-            case ')' -> TokenKind.CloseParenthesisToken;
-            default -> TokenKind.BadToken;
+        SyntaxKind kind = switch (current()) {
+            case '*' -> SyntaxKind.StarToken;
+            case '+' -> SyntaxKind.PlusToken;
+            case '-' -> SyntaxKind.MinusToken;
+            case '/' -> SyntaxKind.SlashToken;
+            case '^' -> SyntaxKind.CaretToken;
+            case '(' -> SyntaxKind.OpenParenthesisToken;
+            case ')' -> SyntaxKind.CloseParenthesisToken;
+            default -> SyntaxKind.BadToken;
         };
 
         SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), null);
@@ -61,7 +61,7 @@ public class Lexer {
         while (Character.isLetter(current()))
             next();
         String tokenText = text.substring(start, position);
-        TokenKind kind = SyntaxTraits.getTextualTokenKind(tokenText);
+        SyntaxKind kind = SyntaxTraits.getTextualTokenKind(tokenText);
         return new SyntaxToken(start, kind, tokenText, tokenText);
     }
 
@@ -70,7 +70,7 @@ public class Lexer {
         while (Character.isWhitespace(current()))
             next();
         String tokenText = text.substring(start, position);
-        return new SyntaxToken(start, TokenKind.WhitespaceToken, tokenText, null);
+        return new SyntaxToken(start, SyntaxKind.WhitespaceToken, tokenText, null);
     }
 
     private SyntaxToken lexInteger() {
@@ -78,6 +78,6 @@ public class Lexer {
         while (Character.isDigit(current()))
             next();
         String tokenText = text.substring(start, position);
-        return new SyntaxToken(start, TokenKind.NumberToken, tokenText, Integer.parseInt(tokenText));
+        return new SyntaxToken(start, SyntaxKind.NumberToken, tokenText, Integer.parseInt(tokenText));
     }
 }

@@ -1,6 +1,6 @@
 package Serpent;
 
-public enum TokenKind {
+public enum SyntaxKind {
     BadToken,
     PlusToken,
     MinusToken,
