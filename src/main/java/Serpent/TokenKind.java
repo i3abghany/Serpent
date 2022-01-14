@@ -1,6 +1,7 @@
 package Serpent;
 
 public enum TokenKind {
+    BadToken,
     PlusToken,
     MinusToken,
     StarToken,
@@ -9,10 +10,11 @@ public enum TokenKind {
     CloseParenthesisToken,
     NumberToken,
     IdentifierToken,
-    BadToken,
     WhitespaceToken,
     CaretToken,
+
     FalseKeyword,
     TrueKeyword,
+
     EndOfFileToken,
 }

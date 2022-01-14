@@ -48,16 +48,12 @@ public class Lexer {
             case '^' -> TokenKind.CaretToken;
             case '(' -> TokenKind.OpenParenthesisToken;
             case ')' -> TokenKind.CloseParenthesisToken;
-            default -> null;
+            default -> TokenKind.BadToken;
         };
 
-        if (kind != null) {
-            SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), null);
-            position++;
-            return ret;
-        }
-
-        return null;
+        SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), null);
+        position++;
+        return ret;
     }
 
     private SyntaxToken lexTextualToken() {
