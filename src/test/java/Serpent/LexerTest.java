@@ -33,31 +33,33 @@ class LexerTest {
     }
 
     @Test
-    void lexArithmeticExpression() {
-        Lexer lexer = new Lexer("12312 + 5 * 13 / 2");
+    void lexWhitespaceSeparatedArithmeticExpression() {
+        String expr = "12312 + 5 * 13 / 2";
+        Lexer lexer = new Lexer(expr);
         SyntaxToken[] tokens = new SyntaxToken[]{
-                new SyntaxToken(0, SyntaxKind.NumberToken, "12312", 12312),
-                new SyntaxToken(5, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(6, SyntaxKind.PlusToken, "+", null),
-                new SyntaxToken(7, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(8, SyntaxKind.NumberToken, "5", 5),
-                new SyntaxToken(9, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(10, SyntaxKind.StarToken, "*", null),
-                new SyntaxToken(11, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(12, SyntaxKind.NumberToken, "13", 13),
-                new SyntaxToken(14, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(15, SyntaxKind.SlashToken, "/", null),
-                new SyntaxToken(16, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(17, SyntaxKind.NumberToken, "2", 2),
-                new SyntaxToken(18, SyntaxKind.EndOfFileToken, "\0", null),
+                new SyntaxToken(expr.indexOf("12312"), SyntaxKind.NumberToken, "12312", 12312),
+                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
+                new SyntaxToken(expr.indexOf("5"), SyntaxKind.NumberToken, "5", 5),
+                new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", null),
+                new SyntaxToken(expr.indexOf("13"), SyntaxKind.NumberToken, "13", 13),
+                new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", null),
+                new SyntaxToken(expr.length() - 1, SyntaxKind.NumberToken, "2", 2),
         };
 
         int i = 0;
-        SyntaxToken token;
-        do {
+        boolean turn = false;
+        SyntaxToken token = lexer.nextToken();
+        while (token.getKind() != SyntaxKind.EndOfFileToken) {
+            if (!turn) {
+                Assertions.assertEquals(tokens[i], token);
+                i++;
+            } else {
+                Assertions.assertEquals(SyntaxKind.WhitespaceToken, token.getKind());
+                Assertions.assertEquals(" ", token.getText());
+                Assertions.assertNull(token.getValue());
+            }
+            turn = !turn;
             token = lexer.nextToken();
-            Assertions.assertEquals(tokens[i], token);
-            i++;
-        } while (token.getKind() != SyntaxKind.EndOfFileToken);
+        }
     }
 }
