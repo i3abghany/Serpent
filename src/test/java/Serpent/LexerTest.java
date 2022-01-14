@@ -6,6 +6,9 @@ import Serpent.Syntax.SyntaxToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class LexerTest {
     @Test
     void lexEmptyLine() {
@@ -38,11 +41,11 @@ class LexerTest {
         Lexer lexer = new Lexer(expr);
         SyntaxToken[] tokens = new SyntaxToken[]{
                 new SyntaxToken(expr.indexOf("12312"), SyntaxKind.NumberToken, "12312", 12312),
-                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
+                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", "+"),
                 new SyntaxToken(expr.indexOf("5"), SyntaxKind.NumberToken, "5", 5),
-                new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", null),
+                new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", "*"),
                 new SyntaxToken(expr.indexOf("13"), SyntaxKind.NumberToken, "13", 13),
-                new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", null),
+                new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", "/"),
                 new SyntaxToken(expr.length() - 1, SyntaxKind.NumberToken, "2", 2),
         };
 
@@ -61,5 +64,43 @@ class LexerTest {
             turn = !turn;
             token = lexer.nextToken();
         }
+    }
+
+    @Test
+    void lexSingleTokens() {
+        ArrayList<KindInfo> infos = getTokensWithText();
+
+        for (KindInfo kindInfo : infos) {
+            Lexer lexer = new Lexer(kindInfo.text);
+            Assertions.assertEquals(new SyntaxToken(0, kindInfo.kind, kindInfo.text, kindInfo.value), lexer.nextToken());
+        }
+
+    }
+
+    private record KindInfo(SyntaxKind kind, String text, Object value) {}
+
+    private ArrayList<KindInfo> getTokensWithText() {
+        ArrayList<KindInfo> kinds = new ArrayList<>();
+        for (SyntaxKind kind : SyntaxKind.values()) {
+            if (kind.text != null) {
+                kinds.add(new KindInfo(kind, kind.text, kind.text));
+            }
+        }
+
+        ArrayList<KindInfo> dynamicKinds = new ArrayList<>(List.of(
+                new KindInfo(SyntaxKind.NumberToken, "1", 1),
+                new KindInfo(SyntaxKind.NumberToken, "0", 0),
+                new KindInfo(SyntaxKind.NumberToken, "12345", 12345),
+                new KindInfo(SyntaxKind.IdentifierToken, "a", "a"),
+                new KindInfo(SyntaxKind.IdentifierToken, "ASD", "ASD"),
+                new KindInfo(SyntaxKind.WhitespaceToken, " ", null),
+                new KindInfo(SyntaxKind.WhitespaceToken, "\t", null),
+                new KindInfo(SyntaxKind.WhitespaceToken, "\t ", null),
+                new KindInfo(SyntaxKind.WhitespaceToken, "\n ", null),
+                new KindInfo(SyntaxKind.WhitespaceToken, "\r\n ", null)
+        ));
+
+        kinds.addAll(dynamicKinds);
+        return kinds;
     }
 }
