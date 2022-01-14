@@ -5,9 +5,15 @@ import Serpent.Syntax.SyntaxKind;
 import Serpent.Syntax.SyntaxToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.ArgumentUtils;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 class LexerTest {
     @Test
@@ -102,5 +108,29 @@ class LexerTest {
 
         kinds.addAll(dynamicKinds);
         return kinds;
+    }
+
+    @ParameterizedTest
+    @MethodSource("providesBadTokens")
+    void lexBadTokens(String badToken) {
+        Lexer lexer = new Lexer(badToken);
+        SyntaxToken token = lexer.nextToken();
+        Assertions.assertEquals(SyntaxKind.BadToken, token.getKind());
+        Assertions.assertFalse(lexer.getDiagnostics().isEmpty());
+    }
+
+    private static Stream<Arguments> providesBadTokens() {
+        return Stream.of(
+                Arguments.of("!"),
+                Arguments.of("@"),
+                Arguments.of("#"),
+                Arguments.of("$"),
+                Arguments.of("&"),
+                Arguments.of("_"),
+                Arguments.of("\\"),
+                Arguments.of("×"),
+                Arguments.of("ٍ"),
+                Arguments.of("©")
+        );
     }
 }
