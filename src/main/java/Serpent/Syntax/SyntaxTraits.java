@@ -1,5 +1,8 @@
 package Serpent.Syntax;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class SyntaxTraits {
     public static SyntaxKind getTextualTokenKind(String text) {
         return switch (text) {
@@ -23,5 +26,15 @@ public final class SyntaxTraits {
             case MinusToken, PlusToken -> 4;
             default -> 0;
         };
+    }
+
+    public static List<SyntaxKind> getBinaryOperators() {
+        ArrayList<SyntaxKind> operatorTokens = new ArrayList<>();
+        for (SyntaxKind kind : SyntaxKind.values()) {
+            if (getBinaryOperatorPrecedence(kind) > 0) {
+                operatorTokens.add(kind);
+            }
+        }
+        return operatorTokens;
     }
 }
