@@ -24,4 +24,8 @@ public class NumberExpression extends ExpressionSyntax {
     public List<SyntaxNode> getChildren() {
         return List.of(numberToken);
     }
+
+    public Object getValue() {
+        return value;
+    }
 }

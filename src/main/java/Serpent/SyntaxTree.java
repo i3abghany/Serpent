@@ -6,4 +6,8 @@ public class SyntaxTree {
     public SyntaxTree(SyntaxNode root) {
         this.root = root;
     }
+
+    public SyntaxNode getRoot() {
+        return root;
+    }
 }
