@@ -33,7 +33,16 @@ public class Parser {
     }
 
     private ExpressionSyntax parseExpression(int parentPrecedence) {
-        ExpressionSyntax left = parsePrimaryExpression();
+        ExpressionSyntax left;
+
+        int unaryOperatorPrecedence = SyntaxTraits.getUnaryOperatorPrecedence(current().getKind());
+        if (unaryOperatorPrecedence > 0 && unaryOperatorPrecedence >= parentPrecedence) {
+            SyntaxToken operatorToken = nextToken();
+            ExpressionSyntax operand = parseExpression(unaryOperatorPrecedence);
+            left = new UnaryExpression(operatorToken, operand);
+        } else {
+            left = parsePrimaryExpression();
+        }
 
         while (true) {
             int operatorPrecedence = SyntaxTraits.getBinaryOperatorPrecedence(current().getKind());

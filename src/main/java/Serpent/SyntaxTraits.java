@@ -17,4 +17,11 @@ public final class SyntaxTraits {
             default -> 0;
         };
     }
+
+    public static int getUnaryOperatorPrecedence(SyntaxKind kind) {
+        return switch (kind) {
+            case MinusToken, PlusToken -> 4;
+            default -> 0;
+        };
+    }
 }

@@ -20,5 +20,5 @@ public enum SyntaxKind {
     BinaryExpression,
     ParenthesizedExpression,
 
-    EndOfFileToken,
+    EndOfFileToken, UnaryExpression,
 }
