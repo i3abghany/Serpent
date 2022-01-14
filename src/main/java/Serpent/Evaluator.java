@@ -17,14 +17,14 @@ public class Evaluator {
     }
 
     private int evaluateExpression(SyntaxNode node) {
-        if (node instanceof NumberExpression numberExpression) {
-            return (int) numberExpression.getValue();
-        } else if (node instanceof ParenthesizedExpression parenthesizedExpression) {
-            return evaluateExpression(parenthesizedExpression.getExpression());
-        } else if (node instanceof BinaryExpression binaryExpression) {
-            int left = evaluateExpression(binaryExpression.getLeft());
-            int right = evaluateExpression(binaryExpression.getRight());
-            return switch (binaryExpression.getOperatorToken().getKind()) {
+        if (node instanceof NumberExpression ne) {
+            return (int) ne.getValue();
+        } else if (node instanceof ParenthesizedExpression pe) {
+            return evaluateExpression(pe.getExpression());
+        } else if (node instanceof BinaryExpression be) {
+            int left = evaluateExpression(be.getLeft());
+            int right = evaluateExpression(be.getRight());
+            return switch (be.getOperatorToken().getKind()) {
                 case PlusToken -> left + right;
                 case MinusToken -> left - right;
                 case SlashToken -> left / right;
