@@ -2,16 +2,16 @@ package Serpent;
 
 import java.util.List;
 
-public class NumberExpressionSyntax extends ExpressionSyntax {
+public class NumberExpression extends ExpressionSyntax {
     private final SyntaxToken numberToken;
     private final Object value;
 
-    public NumberExpressionSyntax(SyntaxToken numberToken, Object value) {
+    public NumberExpression(SyntaxToken numberToken, Object value) {
         this.numberToken = numberToken;
         this.value = value;
     }
 
-    public NumberExpressionSyntax(SyntaxToken token) {
+    public NumberExpression(SyntaxToken token) {
         this(token, token.getValue());
     }
 
