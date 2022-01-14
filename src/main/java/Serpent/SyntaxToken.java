@@ -1,7 +1,8 @@
 package Serpent;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Collections;
 
 public class SyntaxToken extends SyntaxNode {
     private final int position;
@@ -33,13 +34,14 @@ public class SyntaxToken extends SyntaxNode {
         return position;
     }
 
+    @Override
     public SyntaxKind getKind() {
         return kind;
     }
 
     @Override
-    public ArrayList<SyntaxNode> getChildren() {
-        return null;
+    public List<SyntaxNode> getChildren() {
+        return Collections.emptyList();
     }
 
     public String getText() {
