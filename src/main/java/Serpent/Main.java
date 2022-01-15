@@ -37,6 +37,16 @@ public class Main {
             }
 
             Evaluator evaluator = new Evaluator(ast);
+            diagnostics.addAll(evaluator.getDiagnostics());
+
+            if (!diagnostics.isEmpty()){
+                for (String d : diagnostics) {
+                    System.out.println(d);
+                }
+                diagnostics.clear();
+                continue;
+            }
+
             System.out.println(evaluator.evaluate());
         }
     }
