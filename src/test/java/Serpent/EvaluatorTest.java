@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 class EvaluatorTest {
 
     @ParameterizedTest
-    @MethodSource("providesBinaryOperator")
+    @MethodSource("providesBinaryExpressionOperandsAndOperator")
     void evaluateSimpleBinaryExpressions(SyntaxKind operator, int a, int b) {
         String expr = String.format("%d %s %d", a, operator.text, b);
         SyntaxTree ast = new Parser(expr).parse();
@@ -31,7 +31,7 @@ class EvaluatorTest {
         }
     }
 
-    private static Stream<Arguments> providesBinaryOperator() {
+    private static Stream<Arguments> providesBinaryExpressionOperandsAndOperator() {
         List<SyntaxKind> ops = SyntaxTraits.getBinaryOperators();
         Stream<Arguments> s = Stream.empty();
         for (SyntaxKind op : ops) {
