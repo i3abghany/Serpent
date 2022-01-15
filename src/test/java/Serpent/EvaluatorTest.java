@@ -8,11 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.stream.Stream;
-
 
 class EvaluatorTest {
 
@@ -23,7 +21,15 @@ class EvaluatorTest {
         SyntaxTree ast = new Parser(expr).parse();
         switch (operator) {
             case StarToken -> Assertions.assertEquals(a * b, new Evaluator(ast).evaluate());
-            case SlashToken -> Assertions.assertEquals(a / b, new Evaluator(ast).evaluate());
+            case SlashToken -> {
+                Evaluator evaluator = new Evaluator(ast);
+                if (b == 0) {
+                    evaluator.evaluate();
+                    Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                } else {
+                    Assertions.assertEquals(a / b, evaluator.evaluate());
+                }
+            }
             case CaretToken -> Assertions.assertEquals((int) Math.pow(a, b), new Evaluator(ast).evaluate());
             case MinusToken -> Assertions.assertEquals(a - b, new Evaluator(ast).evaluate());
             case PlusToken -> Assertions.assertEquals(a + b, new Evaluator(ast).evaluate());
@@ -35,8 +41,8 @@ class EvaluatorTest {
         List<SyntaxKind> ops = SyntaxTraits.getBinaryOperators();
         Stream<Arguments> s = Stream.empty();
         for (SyntaxKind op : ops) {
-            for (int i = 0; i <= 4; i++) {
-                for (int j = 1; j <= 5; j++) {
+            for (int i = 0; i <= 7; i++) {
+                for (int j = 0; j <= 150; j += 19) {
                     s = Stream.concat(s, Stream.of(Arguments.of(op, i, j)));
                 }
             }
