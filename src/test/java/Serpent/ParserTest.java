@@ -26,8 +26,13 @@ public class ParserTest {
             List<SyntaxNode> children = parsedExpr.getChildren();
             Assertions.assertEquals(children.size(), 3);
             Assertions.assertInstanceOf(BinaryExpression.class, children.get(0));
+            Assertions.assertEquals(SyntaxKind.BinaryExpression, children.get(0).getKind());
+
             Assertions.assertInstanceOf(SyntaxToken.class, children.get(1));
+            Assertions.assertEquals(operator2, children.get(1).getKind());
+
             Assertions.assertInstanceOf(NumberExpression.class, children.get(2));
+            Assertions.assertEquals(SyntaxKind.NumberExpression, children.get(2).getKind());
 
             BinaryExpression left = (BinaryExpression) children.get(0);
             List<SyntaxNode> leftChildren = left.getChildren();
@@ -39,9 +44,15 @@ public class ParserTest {
         } else {
             List<SyntaxNode> children = parsedExpr.getChildren();
             Assertions.assertEquals(children.size(), 3);
+
             Assertions.assertInstanceOf(NumberExpression.class, children.get(0));
+            Assertions.assertEquals(SyntaxKind.NumberExpression, children.get(0).getKind());
+
             Assertions.assertInstanceOf(SyntaxToken.class, children.get(1));
+            Assertions.assertEquals(operator1, children.get(1).getKind());
+
             Assertions.assertInstanceOf(BinaryExpression.class, children.get(2));
+            Assertions.assertEquals(SyntaxKind.BinaryExpression, children.get(2).getKind());
 
             BinaryExpression right = (BinaryExpression) children.get(2);
             List<SyntaxNode> rightChildren = right.getChildren();
