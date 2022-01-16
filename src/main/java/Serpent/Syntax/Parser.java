@@ -32,7 +32,7 @@ public class Parser {
                     SyntaxToken numberToken = matchToken(SyntaxKind.NumberToken);
                     return new LiteralExpression(numberToken);
                 } else if (current().getKind() == SyntaxKind.TrueKeyword ||
-                            current().getKind() == SyntaxKind.FalseKeyword) {
+                        current().getKind() == SyntaxKind.FalseKeyword) {
                     SyntaxToken booleanToken = nextToken();
                     return new LiteralExpression(booleanToken);
                 } else {

@@ -37,7 +37,7 @@ public class SyntaxTree {
         }
 
         StringBuilder ret = new StringBuilder();
-        String marker =  isLast ? "└──" : "├──";
+        String marker = isLast ? "└──" : "├──";
 
         ret.append(indent).append(marker).append(node.getKind());
 
@@ -52,7 +52,7 @@ public class SyntaxTree {
             lastChild = children.get(children.size() - 1);
         }
 
-        indent += isLast ? "    " :  "│   ";
+        indent += isLast ? "    " : "│   ";
 
         for (SyntaxNode child : children) {
             ret.append(getUnixTreeRepresentation(child, indent, child.equals(lastChild)));

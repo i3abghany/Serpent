@@ -73,7 +73,7 @@ public class Lexer {
                 }
             }
             default -> kind = SyntaxKind.BadToken;
-        };
+        }
 
         if (kind == SyntaxKind.BadToken) {
             diagnostics.add("[Lexer Error]: Unexpected token: " + current());

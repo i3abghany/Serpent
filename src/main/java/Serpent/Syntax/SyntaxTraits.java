@@ -33,7 +33,7 @@ public final class SyntaxTraits {
     public static List<SyntaxKind> getArithmeticBinaryOperators() {
         ArrayList<SyntaxKind> operatorTokens = new ArrayList<>();
         for (SyntaxKind kind : SyntaxKind.values()) {
-            if (getBinaryOperatorPrecedence(kind) > 0 && !getLogicalBinaryOperators().contains(kind) ) {
+            if (getBinaryOperatorPrecedence(kind) > 0 && !getLogicalBinaryOperators().contains(kind)) {
                 operatorTokens.add(kind);
             }
         }

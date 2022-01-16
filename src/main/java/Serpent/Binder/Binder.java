@@ -13,10 +13,15 @@ public class Binder {
 
     public BoundExpression bindExpression(ExpressionSyntax syntax) {
         switch (syntax.getKind()) {
-            case BinaryExpression: return bindBinaryExpression((BinaryExpression) syntax);
-            case LiteralExpression: return bindLiteralExpression((LiteralExpression) syntax);
-            case UnaryExpression: return bindUnaryExpression((UnaryExpression) syntax);
-            default: diagnostics.add("[Binder Error]: Invalid expression " + syntax.getKind()); return null;
+            case BinaryExpression:
+                return bindBinaryExpression((BinaryExpression) syntax);
+            case LiteralExpression:
+                return bindLiteralExpression((LiteralExpression) syntax);
+            case UnaryExpression:
+                return bindUnaryExpression((UnaryExpression) syntax);
+            default:
+                diagnostics.add("[Binder Error]: Invalid expression " + syntax.getKind());
+                return null;
         }
     }
 
@@ -33,8 +38,10 @@ public class Binder {
     private BoundUnaryOperatorKind bindUnaryOperator(SyntaxKind operatorKind, Class<?> operandType) {
         if (operandType.equals(Integer.class)) {
             switch (operatorKind) {
-                case PlusToken: return BoundUnaryOperatorKind.Identity;
-                case MinusToken: return BoundUnaryOperatorKind.Negation;
+                case PlusToken:
+                    return BoundUnaryOperatorKind.Identity;
+                case MinusToken:
+                    return BoundUnaryOperatorKind.Negation;
             }
         } else if (operandType.equals(Boolean.class)) {
             if (operatorKind == SyntaxKind.BangToken) {

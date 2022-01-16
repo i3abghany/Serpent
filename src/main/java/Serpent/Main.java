@@ -48,7 +48,7 @@ public class Main {
             BoundExpression rootExpression = binder.bindExpression((ExpressionSyntax) ast.getRoot());
             diagnostics.addAll(binder.getDiagnostics());
 
-            if (!diagnostics.isEmpty()){
+            if (!diagnostics.isEmpty()) {
                 for (String d : diagnostics) {
                     System.out.println(d);
                 }
@@ -72,16 +72,20 @@ public class Main {
     }
 
     private static void handleCommand(String line) throws IOException {
-        if (line.equals("@exit")) {
-            System.exit(0);
-        } else if (line.equals("@cls")) {
-            if (System.getProperty("os.name").contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
-            }
-        } else if (line.equals("@printTree")) {
-            printTree = !printTree;
-        } else {
-            diagnostics.add("Unknown Command: " + line);
+        switch (line) {
+            case "@exit":
+                System.exit(0);
+            case "@cls":
+                if (System.getProperty("os.name").contains("Windows")) {
+                    Runtime.getRuntime().exec("cls");
+                }
+                break;
+            case "@printTree":
+                printTree = !printTree;
+                break;
+            default:
+                diagnostics.add("Unknown Command: " + line);
+                break;
         }
     }
 }
