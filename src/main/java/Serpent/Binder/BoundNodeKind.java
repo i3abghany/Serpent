@@ -1,5 +1,8 @@
 package Serpent.Binder;
 
 public enum BoundNodeKind {
-    LiteralExpression, BinaryExpression, ParenthesizedExpression, UnaryExpression
+    LiteralExpression,
+    BinaryExpression,
+    ParenthesizedExpression,
+    UnaryExpression,
 }
