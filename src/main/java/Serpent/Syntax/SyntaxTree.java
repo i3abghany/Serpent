@@ -1,6 +1,7 @@
 package Serpent.Syntax;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SyntaxTree {
     private final SyntaxNode root;
@@ -23,5 +24,40 @@ public class SyntaxTree {
 
     public ArrayList<String> getDiagnostics() {
         return diagnostics;
+    }
+
+    @Override
+    public String toString() {
+        return getUnixTreeRepresentation(root, "", true);
+    }
+
+    private String getUnixTreeRepresentation(SyntaxNode node, String indent, boolean isLast) {
+        if (node == null) {
+            return "";
+        }
+
+        StringBuilder ret = new StringBuilder();
+        String marker =  isLast ? "└──" : "├──";
+
+        ret.append(indent).append(marker).append(node.getKind());
+
+        if (node instanceof SyntaxToken t && t.getValue() != null)
+            ret.append(" ").append(t.getValue());
+
+        ret.append("\n");
+
+        List<SyntaxNode> children = node.getChildren();
+        SyntaxNode lastChild = null;
+        if (children.size() > 0) {
+            lastChild = children.get(children.size() - 1);
+        }
+
+        indent += isLast ? "    " :  "│   ";
+
+        for (SyntaxNode child : children) {
+            ret.append(getUnixTreeRepresentation(child, indent, child.equals(lastChild)));
+        }
+
+        return ret.toString();
     }
 }
