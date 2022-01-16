@@ -19,26 +19,29 @@ class EvaluatorTest {
 
     @ParameterizedTest
     @MethodSource("providesBinaryExpressionOperandsAndOperator")
-    void evaluateSimpleArithmeticExpressions(SyntaxKind operator, int a, int b) {
-        String expr = String.format("%d %s %d", a, operator.text, b);
+    void evaluateSimpleExpressions(SyntaxKind operator, Object a, Object b) {
+        String expr = String.format(a + " %s " + b, operator.text);
         SyntaxTree ast = new Parser(expr).parse();
         Binder binder = new Binder();
         BoundExpression rootExpression = binder.bindExpression((ExpressionSyntax) ast.getRoot());
         Assertions.assertTrue(binder.getDiagnostics().isEmpty());
+
+        Evaluator evaluator = new Evaluator(rootExpression);
         switch (operator) {
-            case StarToken -> Assertions.assertEquals(a * b, new Evaluator(rootExpression).evaluate());
+            case StarToken -> Assertions.assertEquals((int) a * (int) b, evaluator.evaluate());
             case SlashToken -> {
-                Evaluator evaluator = new Evaluator(rootExpression);
-                if (b == 0) {
+                if ((int) b == 0) {
                     evaluator.evaluate();
                     Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
                 } else {
-                    Assertions.assertEquals(a / b, evaluator.evaluate());
+                    Assertions.assertEquals((int) a / (int) b, evaluator.evaluate());
                 }
             }
-            case CaretToken -> Assertions.assertEquals((int) Math.pow(a, b), new Evaluator(rootExpression).evaluate());
-            case MinusToken -> Assertions.assertEquals(a - b, new Evaluator(rootExpression).evaluate());
-            case PlusToken -> Assertions.assertEquals(a + b, new Evaluator(rootExpression).evaluate());
+            case CaretToken -> Assertions.assertEquals((int) Math.pow((int) a, (int) b), evaluator.evaluate());
+            case MinusToken -> Assertions.assertEquals((int) a - (int) b, evaluator.evaluate());
+            case PlusToken -> Assertions.assertEquals((int) a + (int) b, evaluator.evaluate());
+            case AmpersandAmpersandToken -> Assertions.assertEquals((boolean) a && (boolean) b, evaluator.evaluate());
+            case BarBarToken -> Assertions.assertEquals((boolean) a || (boolean) b, evaluator.evaluate());
             default -> Assertions.fail();
         }
     }
@@ -53,6 +56,19 @@ class EvaluatorTest {
                 }
             }
         }
+
+        s = Stream.concat(s, Stream.of(
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, false),
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, false),
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, true),
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, true),
+                Arguments.of(SyntaxKind.BarBarToken, false, false),
+                Arguments.of(SyntaxKind.BarBarToken, true, false),
+                Arguments.of(SyntaxKind.BarBarToken, true, true),
+                Arguments.of(SyntaxKind.BarBarToken, false, true)
+            )
+        );
+
         return s;
     }
 }
