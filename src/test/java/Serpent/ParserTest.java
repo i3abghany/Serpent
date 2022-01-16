@@ -22,9 +22,10 @@ public class ParserTest {
 
         Assertions.assertInstanceOf(BinaryExpression.class, parsedExpr);
 
+        List<SyntaxNode> children = parsedExpr.getChildren();
+        Assertions.assertEquals(children.size(), 3);
+
         if (precedence1 >= precedence2) {
-            List<SyntaxNode> children = parsedExpr.getChildren();
-            Assertions.assertEquals(children.size(), 3);
             Assertions.assertInstanceOf(BinaryExpression.class, children.get(0));
             Assertions.assertEquals(SyntaxKind.BinaryExpression, children.get(0).getKind());
 
@@ -42,9 +43,6 @@ public class ParserTest {
             Assertions.assertInstanceOf(SyntaxToken.class, leftChildren.get(1));
             Assertions.assertInstanceOf(LiteralExpression.class, leftChildren.get(2));
         } else {
-            List<SyntaxNode> children = parsedExpr.getChildren();
-            Assertions.assertEquals(children.size(), 3);
-
             Assertions.assertInstanceOf(LiteralExpression.class, children.get(0));
             Assertions.assertEquals(SyntaxKind.LiteralExpression, children.get(0).getKind());
 
