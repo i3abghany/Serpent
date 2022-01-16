@@ -14,9 +14,10 @@ public final class SyntaxTraits {
 
     public static int getBinaryOperatorPrecedence(SyntaxKind kind) {
         return switch (kind) {
-            case StarToken, SlashToken -> 5;
-            case CaretToken -> 4;
-            case MinusToken, PlusToken -> 3;
+            case StarToken, SlashToken -> 6;
+            case CaretToken -> 5;
+            case MinusToken, PlusToken -> 4;
+            case EqualsEqualsToken, BangEqualsToken -> 3;
             case AmpersandAmpersandToken -> 2;
             case BarBarToken -> 1;
             default -> 0;
@@ -25,7 +26,7 @@ public final class SyntaxTraits {
 
     public static int getUnaryOperatorPrecedence(SyntaxKind kind) {
         return switch (kind) {
-            case MinusToken, PlusToken, BangToken -> 6;
+            case MinusToken, PlusToken, BangToken -> 7;
             default -> 0;
         };
     }

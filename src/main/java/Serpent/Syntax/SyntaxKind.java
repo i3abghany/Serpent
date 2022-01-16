@@ -24,7 +24,9 @@ public enum SyntaxKind {
 
     EndOfFileToken,
     AmpersandAmpersandToken("&&"),
-    BarBarToken("||");
+    BarBarToken("||"),
+    EqualsEqualsToken("=="),
+    BangEqualsToken("!=");
 
     public final String text;
 

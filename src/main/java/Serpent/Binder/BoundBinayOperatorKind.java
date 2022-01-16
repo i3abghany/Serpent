@@ -4,5 +4,10 @@ public enum BoundBinayOperatorKind {
     Addition,
     Subtraction,
     Multiplication,
-    Division, Power, LogicalAnd, LogicalOr,
+    Division,
+    Power,
+    LogicalAnd,
+    LogicalOr,
+    Equals,
+    NotEquals,
 }

@@ -2,6 +2,8 @@ package Serpent;
 
 import Serpent.Binder.*;
 
+import java.util.Objects;
+
 public class Evaluator {
     private final DiagnosticList diagnostics = new DiagnosticList();
     private final BoundExpression rootExpression;
@@ -53,6 +55,10 @@ public class Evaluator {
                 }
                 case LogicalOr -> {
                     return (boolean) left || (boolean) right;
+                } case Equals -> {
+                    return Objects.equals(left, right);
+                } case NotEquals -> {
+                    return !Objects.equals(left, right);
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + bbe.getBoundOperator().getOperatorKind());
             }
