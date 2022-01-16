@@ -32,7 +32,6 @@ public class Binder {
         BoundExpression boundOperand = bindExpression(syntax.getExpression());
         BoundUnaryOperatorKind boundOperatorKind = bindUnaryOperator(syntax.getOperatorToken().getKind(), boundOperand.getValueType());
         if (boundOperatorKind == null) {
-            diagnostics.add("[Binder Error]: Invalid unary operator " + syntax.getOperatorToken().getKind());
             return boundOperand;
         }
         return new BoundUnaryExpression(boundOperatorKind, boundOperand);
@@ -52,6 +51,7 @@ public class Binder {
             }
         }
 
+        diagnostics.add("[Binder Error]: Unary operator " + operatorKind + " is not defined for " + operandType);
         return null;
     }
 
@@ -60,7 +60,6 @@ public class Binder {
         BoundExpression boundRight = bindExpression(syntax.getRight());
         BoundBinayOperatorKind boundOperator = bindBinaryOperator(syntax.getOperatorToken().getKind(), boundLeft.getValueType(), boundRight.getValueType());
         if (boundOperator == null) {
-            diagnostics.add("[Binder Error]: Invalid binary operator " + syntax.getOperatorToken().getKind());
             return boundLeft;
         }
         return new BoundBinaryExpression(boundLeft, boundOperator, boundRight);
@@ -68,24 +67,29 @@ public class Binder {
 
     private BoundBinayOperatorKind bindBinaryOperator(SyntaxKind operatorKind, Class<?> leftType, Class<?> rightType) {
         if (leftType.equals(Integer.class) && rightType.equals(Integer.class)) {
-            return switch (operatorKind) {
-                case PlusToken -> BoundBinayOperatorKind.Addition;
-                case MinusToken -> BoundBinayOperatorKind.Subtraction;
-                case StarToken -> BoundBinayOperatorKind.Multiplication;
-                case SlashToken -> BoundBinayOperatorKind.Division;
-                case CaretToken -> BoundBinayOperatorKind.Power;
-                default -> null;
-            };
+            switch (operatorKind) {
+                case PlusToken:
+                    return BoundBinayOperatorKind.Addition;
+                case MinusToken:
+                    return BoundBinayOperatorKind.Subtraction;
+                case StarToken:
+                    return BoundBinayOperatorKind.Multiplication;
+                case SlashToken:
+                    return BoundBinayOperatorKind.Division;
+                case CaretToken:
+                    return BoundBinayOperatorKind.Power;
+            }
         } else if (leftType.equals(Boolean.class) && rightType.equals(Boolean.class)) {
-            return switch (operatorKind) {
-                case AmpersandAmpersandToken -> BoundBinayOperatorKind.LogicalAnd;
-                case BarBarToken -> BoundBinayOperatorKind.LogicalOr;
-                default -> null;
-            };
-        } else {
-            diagnostics.add("[Binder Error]: Binary operator " + operatorKind + " is not defined for " + leftType + " and " + rightType);
-            return null;
+            switch (operatorKind) {
+                case AmpersandAmpersandToken:
+                    return BoundBinayOperatorKind.LogicalAnd;
+                case BarBarToken:
+                    return BoundBinayOperatorKind.LogicalOr;
+            }
         }
+
+        diagnostics.add("[Binder Error]: Binary operator " + operatorKind + " is not defined for " + leftType + " and " + rightType);
+        return null;
     }
 
     private BoundExpression bindLiteralExpression(LiteralExpression syntax) {
