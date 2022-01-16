@@ -2,22 +2,22 @@ package Serpent.Syntax;
 
 import java.util.List;
 
-public class NumberExpression extends ExpressionSyntax {
+public class LiteralExpression extends ExpressionSyntax {
     private final SyntaxToken numberToken;
     private final Object value;
 
-    public NumberExpression(SyntaxToken numberToken, Object value) {
+    public LiteralExpression(SyntaxToken numberToken, Object value) {
         this.numberToken = numberToken;
         this.value = value;
     }
 
-    public NumberExpression(SyntaxToken token) {
+    public LiteralExpression(SyntaxToken token) {
         this(token, token.getValue());
     }
 
     @Override
     public SyntaxKind getKind() {
-        return SyntaxKind.NumberExpression;
+        return SyntaxKind.LiteralExpression;
     }
 
     @Override

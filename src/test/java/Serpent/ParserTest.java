@@ -31,22 +31,22 @@ public class ParserTest {
             Assertions.assertInstanceOf(SyntaxToken.class, children.get(1));
             Assertions.assertEquals(operator2, children.get(1).getKind());
 
-            Assertions.assertInstanceOf(NumberExpression.class, children.get(2));
-            Assertions.assertEquals(SyntaxKind.NumberExpression, children.get(2).getKind());
+            Assertions.assertInstanceOf(LiteralExpression.class, children.get(2));
+            Assertions.assertEquals(SyntaxKind.LiteralExpression, children.get(2).getKind());
 
             BinaryExpression left = (BinaryExpression) children.get(0);
             List<SyntaxNode> leftChildren = left.getChildren();
             Assertions.assertEquals(children.size(), 3);
 
-            Assertions.assertInstanceOf(NumberExpression.class, leftChildren.get(0));
+            Assertions.assertInstanceOf(LiteralExpression.class, leftChildren.get(0));
             Assertions.assertInstanceOf(SyntaxToken.class, leftChildren.get(1));
-            Assertions.assertInstanceOf(NumberExpression.class, leftChildren.get(2));
+            Assertions.assertInstanceOf(LiteralExpression.class, leftChildren.get(2));
         } else {
             List<SyntaxNode> children = parsedExpr.getChildren();
             Assertions.assertEquals(children.size(), 3);
 
-            Assertions.assertInstanceOf(NumberExpression.class, children.get(0));
-            Assertions.assertEquals(SyntaxKind.NumberExpression, children.get(0).getKind());
+            Assertions.assertInstanceOf(LiteralExpression.class, children.get(0));
+            Assertions.assertEquals(SyntaxKind.LiteralExpression, children.get(0).getKind());
 
             Assertions.assertInstanceOf(SyntaxToken.class, children.get(1));
             Assertions.assertEquals(operator1, children.get(1).getKind());
@@ -58,9 +58,9 @@ public class ParserTest {
             List<SyntaxNode> rightChildren = right.getChildren();
             Assertions.assertEquals(children.size(), 3);
 
-            Assertions.assertInstanceOf(NumberExpression.class, rightChildren.get(0));
+            Assertions.assertInstanceOf(LiteralExpression.class, rightChildren.get(0));
             Assertions.assertInstanceOf(SyntaxToken.class, rightChildren.get(1));
-            Assertions.assertInstanceOf(NumberExpression.class, rightChildren.get(2));
+            Assertions.assertInstanceOf(LiteralExpression.class, rightChildren.get(2));
         }
     }
 

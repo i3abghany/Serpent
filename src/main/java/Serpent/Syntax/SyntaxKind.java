@@ -12,12 +12,13 @@ public enum SyntaxKind {
     IdentifierToken,
     WhitespaceToken,
     CaretToken("^"),
+    BangToken("!"),
 
     FalseKeyword("false"),
     TrueKeyword("true"),
 
     BinaryExpression,
-    NumberExpression,
+    LiteralExpression,
     ParenthesizedExpression,
     UnaryExpression,
 

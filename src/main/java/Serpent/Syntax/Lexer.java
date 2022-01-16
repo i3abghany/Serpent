@@ -55,6 +55,7 @@ public class Lexer {
             case '^' -> SyntaxKind.CaretToken;
             case '(' -> SyntaxKind.OpenParenthesisToken;
             case ')' -> SyntaxKind.CloseParenthesisToken;
+            case '!' -> SyntaxKind.BangToken;
             default -> SyntaxKind.BadToken;
         };
 

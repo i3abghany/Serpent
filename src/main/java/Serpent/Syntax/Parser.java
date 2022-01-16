@@ -29,7 +29,7 @@ public class Parser {
             }
             default -> {
                 SyntaxToken numberToken = matchToken(SyntaxKind.NumberToken);
-                return new NumberExpression(numberToken);
+                return new LiteralExpression(numberToken);
             }
         }
     }

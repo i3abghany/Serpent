@@ -2,7 +2,6 @@ package Serpent.Binder;
 
 import Serpent.Syntax.*;
 
-import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import java.util.ArrayList;
 
 public class Binder {
@@ -11,7 +10,7 @@ public class Binder {
     public BoundExpression bindExpression(ExpressionSyntax syntax) {
         switch (syntax.getKind()) {
             case BinaryExpression: return bindBinaryExpression((BinaryExpression) syntax);
-            case NumberExpression: return bindNumberExpression((NumberExpression) syntax);
+            case LiteralExpression: return bindLiteralExpression((LiteralExpression) syntax);
             case UnaryExpression: return bindUnaryExpression((UnaryExpression) syntax);
             default: diagnostics.add("[Binder Error]: Invalid expression " + syntax.getKind()); return null;
         }
@@ -67,7 +66,7 @@ public class Binder {
         };
     }
 
-    private BoundExpression bindNumberExpression(NumberExpression syntax) {
+    private BoundExpression bindLiteralExpression(LiteralExpression syntax) {
         Object value = syntax.getValue();
         if (value instanceof Integer) {
             return new BoundLiteralExpression(value);

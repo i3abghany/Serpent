@@ -121,7 +121,6 @@ class LexerTest {
 
     private static Stream<Arguments> providesBadTokens() {
         return Stream.of(
-                Arguments.of("!"),
                 Arguments.of("@"),
                 Arguments.of("#"),
                 Arguments.of("$"),
