@@ -26,6 +26,7 @@ public class Evaluator {
             return switch (bue.getOperatorKind()) {
                 case Identity -> (int) evaluateExpression(bue.getOperand());
                 case Negation -> -(int) evaluateExpression(bue.getOperand());
+                case LogicalNegation -> !(boolean) evaluateExpression(bue.getOperand());
             };
         } else if (node instanceof BoundBinaryExpression bbe) {
             Object left = evaluateExpression(bbe.getLeft());
@@ -49,6 +50,12 @@ public class Evaluator {
                 }
                 case Power -> {
                     return (int) Math.pow((int) left, (int) right);
+                }
+                case LogicalAnd -> {
+                    return (boolean) left && (boolean) right;
+                }
+                case LogicalOr -> {
+                    return (boolean) left || (boolean) right;
                 }
                 default -> {
                     diagnostics.add("[Eval. Error]: Unknown binary operator.");

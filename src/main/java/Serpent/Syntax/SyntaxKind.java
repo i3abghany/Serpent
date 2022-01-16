@@ -23,7 +23,8 @@ public enum SyntaxKind {
     UnaryExpression,
 
     EndOfFileToken,
-    ;
+    AmpersandAmpersandToken("&&"),
+    BarBarToken("||");
 
     public final String text;
 

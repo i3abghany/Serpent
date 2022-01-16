@@ -28,8 +28,16 @@ public class Parser {
                 return new ParenthesizedExpression(openParen, expr, closedParen);
             }
             default -> {
-                SyntaxToken numberToken = matchToken(SyntaxKind.NumberToken);
-                return new LiteralExpression(numberToken);
+                if (current().getKind() == SyntaxKind.NumberToken) {
+                    SyntaxToken numberToken = matchToken(SyntaxKind.NumberToken);
+                    return new LiteralExpression(numberToken);
+                } else if (current().getKind() == SyntaxKind.TrueKeyword ||
+                            current().getKind() == SyntaxKind.FalseKeyword) {
+                    SyntaxToken booleanToken = nextToken();
+                    return new LiteralExpression(booleanToken);
+                } else {
+                    return new LiteralExpression(matchToken(SyntaxKind.LiteralExpression));
+                }
             }
         }
     }

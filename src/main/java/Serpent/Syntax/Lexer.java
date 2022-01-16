@@ -47,25 +47,49 @@ public class Lexer {
             return lexTextualToken();
         }
 
-        SyntaxKind kind = switch (current()) {
-            case '*' -> SyntaxKind.StarToken;
-            case '+' -> SyntaxKind.PlusToken;
-            case '-' -> SyntaxKind.MinusToken;
-            case '/' -> SyntaxKind.SlashToken;
-            case '^' -> SyntaxKind.CaretToken;
-            case '(' -> SyntaxKind.OpenParenthesisToken;
-            case ')' -> SyntaxKind.CloseParenthesisToken;
-            case '!' -> SyntaxKind.BangToken;
-            default -> SyntaxKind.BadToken;
+        SyntaxKind kind;
+        switch (current()) {
+            case '*' -> kind = SyntaxKind.StarToken;
+            case '+' -> kind = SyntaxKind.PlusToken;
+            case '-' -> kind = SyntaxKind.MinusToken;
+            case '/' -> kind = SyntaxKind.SlashToken;
+            case '^' -> kind = SyntaxKind.CaretToken;
+            case '(' -> kind = SyntaxKind.OpenParenthesisToken;
+            case ')' -> kind = SyntaxKind.CloseParenthesisToken;
+            case '!' -> kind = SyntaxKind.BangToken;
+            case '&' -> {
+                if (lookahead() == '&') {
+                    kind = SyntaxKind.AmpersandAmpersandToken;
+                } else {
+                    kind = SyntaxKind.BadToken;
+                }
+            }
+
+            case '|' -> {
+                if (lookahead() == '|') {
+                    kind = SyntaxKind.BarBarToken;
+                } else {
+                    kind = SyntaxKind.BadToken;
+                }
+            }
+            default -> kind = SyntaxKind.BadToken;
         };
 
         if (kind == SyntaxKind.BadToken) {
             diagnostics.add("[Lexer Error]: Unexpected token: " + current());
         }
 
-        SyntaxToken ret = new SyntaxToken(position, kind, Character.toString(current()), Character.toString(current()));
+        String tokenText = kind.text;
+        SyntaxToken ret;
 
-        position++;
+        if (tokenText != null) {
+            ret = new SyntaxToken(position, kind, tokenText, tokenText);
+            position += tokenText.length();
+        } else {
+            ret = new SyntaxToken(position, kind, Character.toString(current()), Character.toString(current()));
+            position++;
+        }
+
         return ret;
     }
 
@@ -75,7 +99,11 @@ public class Lexer {
             next();
         String tokenText = text.substring(start, position);
         SyntaxKind kind = SyntaxTraits.getTextualTokenKind(tokenText);
-        return new SyntaxToken(start, kind, tokenText, tokenText);
+        return switch (kind) {
+            case IdentifierToken -> new SyntaxToken(start, kind, tokenText, tokenText);
+            case TrueKeyword, FalseKeyword -> new SyntaxToken(start, kind, tokenText, kind == SyntaxKind.TrueKeyword);
+            default -> null;
+        };
     }
 
     private SyntaxToken lexWhitespace() {
