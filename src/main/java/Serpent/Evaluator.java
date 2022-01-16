@@ -55,9 +55,11 @@ public class Evaluator {
                 }
                 case LogicalOr -> {
                     return (boolean) left || (boolean) right;
-                } case Equals -> {
+                }
+                case Equals -> {
                     return Objects.equals(left, right);
-                } case NotEquals -> {
+                }
+                case NotEquals -> {
                     return !Objects.equals(left, right);
                 }
                 default -> throw new IllegalStateException("Unexpected value: " + bbe.getBoundOperator().getOperatorKind());
