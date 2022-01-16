@@ -41,7 +41,11 @@ public class BinderTest {
                 Arguments.of(2, "||", 1),
                 Arguments.of(false, "||", 1),
                 Arguments.of(true, "&&", 1),
-                Arguments.of(2, "&&", false)
+                Arguments.of(2, "&&", false),
+                Arguments.of(2, "==", false),
+                Arguments.of(false, "==", 1),
+                Arguments.of(true, "!=", 1),
+                Arguments.of(4, "!=", true)
         );
     }
 
@@ -49,7 +53,9 @@ public class BinderTest {
         return Stream.of(
                 Arguments.of("-", true),
                 Arguments.of("+", false),
-                Arguments.of("!", 6543)
+                Arguments.of("!", 6543),
+                Arguments.of("!", -6543),
+                Arguments.of("!", 0)
         );
     }
 
