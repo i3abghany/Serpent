@@ -97,6 +97,7 @@ public class Binder {
         if (value instanceof Integer || value instanceof Boolean) {
             return new BoundLiteralExpression(value);
         } else {
+            diagnostics.add("[Binder Error]: Invalid literal value " + value.getClass());
             return new BoundLiteralExpression(0);
         }
     }
