@@ -38,4 +38,8 @@ public class BoundUnaryOperator {
     public BoundUnaryOperatorKind getOperatorKind() {
         return operatorKind;
     }
+
+    public Class<?> getResultType() {
+        return resultType;
+    }
 }

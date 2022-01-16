@@ -16,7 +16,7 @@ public class BoundUnaryExpression extends BoundExpression {
 
     @Override
     public Class<?> getValueType() {
-        return operand.getValueType();
+        return boundOperator.getResultType();
     }
 
     @Override

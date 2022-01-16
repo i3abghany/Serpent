@@ -2,8 +2,6 @@ package Serpent.Syntax;
 
 import Serpent.DiagnosticList;
 
-import java.util.ArrayList;
-
 public class Lexer {
     private final String text;
     private int position;

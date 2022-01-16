@@ -44,4 +44,8 @@ public class BoundBinaryOperator {
     public BoundBinayOperatorKind getOperatorKind() {
         return operatorKind;
     }
+
+    public Class<?> getResultType() {
+        return resultType;
+    }
 }
