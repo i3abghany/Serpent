@@ -19,7 +19,7 @@ class EvaluatorTest {
 
     @ParameterizedTest
     @MethodSource("providesBinaryExpressionOperandsAndOperator")
-    void evaluateSimpleBinaryExpressions(SyntaxKind operator, int a, int b) {
+    void evaluateSimpleArithmeticExpressions(SyntaxKind operator, int a, int b) {
         String expr = String.format("%d %s %d", a, operator.text, b);
         SyntaxTree ast = new Parser(expr).parse();
         Binder binder = new Binder();
@@ -44,7 +44,7 @@ class EvaluatorTest {
     }
 
     private static Stream<Arguments> providesBinaryExpressionOperandsAndOperator() {
-        List<SyntaxKind> ops = SyntaxTraits.getBinaryOperators();
+        List<SyntaxKind> ops = SyntaxTraits.getArithmeticBinaryOperators();
         Stream<Arguments> s = Stream.empty();
         for (SyntaxKind op : ops) {
             for (int i = 0; i <= 7; i++) {

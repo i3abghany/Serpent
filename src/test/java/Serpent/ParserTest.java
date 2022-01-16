@@ -65,7 +65,7 @@ public class ParserTest {
     }
 
     private static Stream<Arguments> providesOperatorPairs() {
-        List<SyntaxKind> kinds = SyntaxTraits.getBinaryOperators();
+        List<SyntaxKind> kinds = SyntaxTraits.getAllBinaryOperators();
         Stream<Arguments> s = Stream.empty();
 
         for (SyntaxKind kind1 : kinds) {
