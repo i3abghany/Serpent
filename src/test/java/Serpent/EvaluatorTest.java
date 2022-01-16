@@ -74,4 +74,132 @@ class EvaluatorTest {
 
         return s;
     }
+
+    // TODO: Test the other parenthesization.
+    @ParameterizedTest
+    @MethodSource("providesArithmeticParenthesizedExpressionsArguments")
+    void testArithmeticParenthesizedExpressions(int a, int b, int c, String op1, String op2) {
+        String expr = "(" + a + op1 + b + ")" + op2 + c;
+        Parser parser = new Parser(expr);
+        Binder binder = new Binder();
+        Evaluator evaluator = new Evaluator(binder.bindExpression((ExpressionSyntax) parser.parse().getRoot()));
+
+        switch (op1) {
+            case "+" -> {
+                switch (op2) {
+                    case "+":
+                        Assertions.assertEquals((a + b) + c, evaluator.evaluate());
+                        break;
+                    case "-":
+                        Assertions.assertEquals((a + b) - c, evaluator.evaluate());
+                        break;
+                    case "/":
+                        if (c != 0) Assertions.assertEquals((a + b) / c, evaluator.evaluate());
+                        break;
+                    case "*":
+                        Assertions.assertEquals((a + b) * c, evaluator.evaluate());
+                        break;
+                    case "^":
+                        Assertions.assertEquals((int) Math.pow((a + b), c), evaluator.evaluate());
+                        break;
+                }
+            }
+            case "-" -> {
+                switch (op2) {
+                    case "+":
+                        Assertions.assertEquals((a - b) + c, evaluator.evaluate());
+                        break;
+                    case "-":
+                        Assertions.assertEquals((a - b) - c, evaluator.evaluate());
+                        break;
+                    case "/":
+                        if (c != 0) Assertions.assertEquals((a - b) / c, evaluator.evaluate());
+                        break;
+                    case "*":
+                        Assertions.assertEquals((a - b) * c, evaluator.evaluate());
+                        break;
+                    case "^":
+                        Assertions.assertEquals((int) Math.pow((a - b), c), evaluator.evaluate());
+                        break;
+                }
+            }
+            case "/" -> {
+                switch (op2) {
+                    case "+":
+                        if (b != 0) Assertions.assertEquals((a / b) + c, evaluator.evaluate());
+                        break;
+                    case "-":
+                        if (b != 0) Assertions.assertEquals((a / b) - c, evaluator.evaluate());
+                        break;
+                    case "/":
+                        if (c != 0 && b != 0) Assertions.assertEquals((a / b) / c, evaluator.evaluate());
+                        break;
+                    case "*":
+                        if (b != 0) Assertions.assertEquals((a / b) * c, evaluator.evaluate());
+                        break;
+                    case "^":
+                        if (b != 0) Assertions.assertEquals((int) Math.pow((a / b), c), evaluator.evaluate());
+                        break;
+                }
+            }
+            case "*" -> {
+                switch (op2) {
+                    case "+":
+                        Assertions.assertEquals((a * b) + c, evaluator.evaluate());
+                        break;
+                    case "-":
+                        Assertions.assertEquals((a * b) - c, evaluator.evaluate());
+                        break;
+                    case "/":
+                        if (c != 0) Assertions.assertEquals((a * b) / c, evaluator.evaluate());
+                        break;
+                    case "*":
+                        Assertions.assertEquals((a * b) * c, evaluator.evaluate());
+                        break;
+                    case "^":
+                        Assertions.assertEquals((int) Math.pow((a * b), c), evaluator.evaluate());
+                        break;
+                }
+            }
+            case "^" -> {
+                switch (op2) {
+                    case "+":
+                        Assertions.assertEquals((int) Math.pow(a, b) + c, evaluator.evaluate());
+                        break;
+                    case "-":
+                        Assertions.assertEquals((int) Math.pow(a, b) - c, evaluator.evaluate());
+                        break;
+                    case "/":
+                        if (c != 0) Assertions.assertEquals((int) Math.pow(a, b) / c, evaluator.evaluate());
+                        break;
+                    case "*":
+                        Assertions.assertEquals((int) Math.pow(a, b) * c, evaluator.evaluate());
+                        break;
+                    case "^":
+                        Assertions.assertEquals((int) Math.pow(Math.pow(a, b), c), evaluator.evaluate());
+                        break;
+                }
+            }
+        }
+    }
+
+    public static Stream<Arguments> providesArithmeticParenthesizedExpressionsArguments() {
+        Stream<Arguments> s = Stream.empty();
+
+        String[] ops = {"+", "-", "*", "/", "^"};
+
+        for (int i = -1; i < 1; i++) {
+            for (int j = -1; j < 1; j++) {
+                for (int k = -1; k < 2; k++) {
+                    for (String op1 : ops) {
+                        for (String op2 : ops) {
+                            s = Stream.concat(s, Stream.of(Arguments.of(i, j, k, op1, op2)));
+                        }
+                    }
+                }
+            }
+        }
+
+        return s;
+    }
 }
