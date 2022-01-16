@@ -13,7 +13,7 @@ public class BoundLiteralExpression extends BoundExpression {
     }
 
     @Override
-    public Class<?> getType() {
+    public Class<?> getValueType() {
         return value.getClass();
     }
 

@@ -22,7 +22,7 @@ public class Binder {
 
     private BoundExpression bindUnaryExpression(UnaryExpression syntax) {
         BoundExpression boundOperand = bindExpression(syntax.getExpression());
-        BoundUnaryOperatorKind boundOperatorKind = bindUnaryOperator(syntax.getOperatorToken().getKind(), boundOperand.getType());
+        BoundUnaryOperatorKind boundOperatorKind = bindUnaryOperator(syntax.getOperatorToken().getKind(), boundOperand.getValueType());
         if (boundOperatorKind == null) {
             diagnostics.add("[Binder Error]: Invalid unary operator " + syntax.getOperatorToken().getKind());
             return boundOperand;
@@ -48,7 +48,7 @@ public class Binder {
     private BoundExpression bindBinaryExpression(BinaryExpression syntax) {
         BoundExpression boundLeft = bindExpression(syntax.getLeft());
         BoundExpression boundRight = bindExpression(syntax.getRight());
-        BoundBinayOperatorKind boundOperator = bindBinaryOperator(syntax.getOperatorToken().getKind(), boundLeft.getType(), boundRight.getType());
+        BoundBinayOperatorKind boundOperator = bindBinaryOperator(syntax.getOperatorToken().getKind(), boundLeft.getValueType(), boundRight.getValueType());
         if (boundOperator == null) {
             diagnostics.add("[Binder Error]: Invalid binary operator " + syntax.getOperatorToken().getKind());
             return boundLeft;

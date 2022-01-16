@@ -24,8 +24,8 @@ public class BoundBinaryExpression extends BoundExpression {
     }
 
     @Override
-    public Class<?> getType() {
-        return left.getType();
+    public Class<?> getValueType() {
+        return left.getValueType();
     }
 
     @Override
