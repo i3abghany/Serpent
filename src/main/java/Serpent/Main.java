@@ -14,6 +14,7 @@ public class Main {
     private final static String prompt = "> ";
     private final static String commandPrefix = "@";
     private final static ArrayList<String> diagnostics = new ArrayList<>();
+    private static boolean printTree = false;
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
@@ -30,6 +31,10 @@ public class Main {
             Parser parser = new Parser(line);
             SyntaxTree ast = parser.parse();
             diagnostics.addAll(ast.getDiagnostics());
+
+            if (printTree) {
+                System.out.println(ast.toString());
+            }
 
             if (!diagnostics.isEmpty()) {
                 for (String d : diagnostics) {
@@ -54,7 +59,7 @@ public class Main {
             Evaluator evaluator = new Evaluator(rootExpression);
             diagnostics.addAll(evaluator.getDiagnostics());
 
-            if (!diagnostics.isEmpty()){
+            if (!diagnostics.isEmpty()) {
                 for (String d : diagnostics) {
                     System.out.println(d);
                 }
@@ -73,6 +78,8 @@ public class Main {
             if (System.getProperty("os.name").contains("Windows")) {
                 Runtime.getRuntime().exec("cls");
             }
+        } else if (line.equals("@printTree")) {
+            printTree = !printTree;
         } else {
             diagnostics.add("Unknown Command: " + line);
         }
