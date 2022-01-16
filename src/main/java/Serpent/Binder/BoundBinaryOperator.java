@@ -21,7 +21,7 @@ public class BoundBinaryOperator {
         this(kind, operatorKind, type, type, type);
     }
 
-    private static final BoundBinaryOperator[] ops = new BoundBinaryOperator[] {
+    private static final BoundBinaryOperator[] ops = new BoundBinaryOperator[]{
             new BoundBinaryOperator(SyntaxKind.PlusToken, BoundBinayOperatorKind.Addition, Integer.class),
             new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinayOperatorKind.Subtraction, Integer.class),
             new BoundBinaryOperator(SyntaxKind.StarToken, BoundBinayOperatorKind.Multiplication, Integer.class),
