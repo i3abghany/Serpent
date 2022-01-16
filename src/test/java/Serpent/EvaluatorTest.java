@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 class EvaluatorTest {
@@ -42,6 +43,8 @@ class EvaluatorTest {
             case PlusToken -> Assertions.assertEquals((int) a + (int) b, evaluator.evaluate());
             case AmpersandAmpersandToken -> Assertions.assertEquals((boolean) a && (boolean) b, evaluator.evaluate());
             case BarBarToken -> Assertions.assertEquals((boolean) a || (boolean) b, evaluator.evaluate());
+            case EqualsEqualsToken -> Assertions.assertEquals(Objects.equals(a, b), evaluator.evaluate());
+            case BangEqualsToken -> Assertions.assertEquals(!Objects.equals(a, b), evaluator.evaluate());
             default -> Assertions.fail();
         }
     }
