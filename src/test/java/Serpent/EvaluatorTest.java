@@ -51,7 +51,7 @@ class EvaluatorTest {
         Stream<Arguments> s = Stream.empty();
         for (SyntaxKind op : ops) {
             for (int i = -3; i <= 3; i++) {
-                for (int j = -60; j <= 150; j += 19) {
+                for (int j = -76; j <= 150; j += 19) {
                     s = Stream.concat(s, Stream.of(Arguments.of(op, i, j)));
                 }
             }
