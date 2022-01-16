@@ -3,11 +3,11 @@ package Serpent.Syntax;
 import java.util.List;
 
 public class BinaryExpression extends ExpressionSyntax {
-    private final SyntaxNode left;
+    private final ExpressionSyntax left;
     private final SyntaxToken operatorToken;
-    private final SyntaxNode right;
+    private final ExpressionSyntax right;
 
-    public BinaryExpression(SyntaxNode left, SyntaxToken operatorToken, SyntaxNode right) {
+    public BinaryExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right) {
         this.left = left;
         this.operatorToken = operatorToken;
         this.right = right;
@@ -23,7 +23,7 @@ public class BinaryExpression extends ExpressionSyntax {
         return List.of(left, operatorToken, right);
     }
 
-    public SyntaxNode getLeft() {
+    public ExpressionSyntax getLeft() {
         return left;
     }
 
@@ -31,7 +31,7 @@ public class BinaryExpression extends ExpressionSyntax {
         return operatorToken;
     }
 
-    public SyntaxNode getRight() {
+    public ExpressionSyntax getRight() {
         return right;
     }
 }

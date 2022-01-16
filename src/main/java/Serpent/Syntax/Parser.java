@@ -51,7 +51,7 @@ public class Parser {
             if (operatorPrecedence <= parentPrecedence || operatorPrecedence == 0)
                 break;
             SyntaxToken operatorToken = nextToken();
-            SyntaxNode right = parseExpression(operatorPrecedence);
+            ExpressionSyntax right = parseExpression(operatorPrecedence);
             left = new BinaryExpression(left, operatorToken, right);
         }
 
