@@ -81,7 +81,8 @@ class LexerTest {
 
     }
 
-    private record KindInfo(SyntaxKind kind, String text, Object value) {}
+    private record KindInfo(SyntaxKind kind, String text, Object value) {
+    }
 
     private ArrayList<KindInfo> getTokensWithText() {
         ArrayList<KindInfo> kinds = new ArrayList<>();

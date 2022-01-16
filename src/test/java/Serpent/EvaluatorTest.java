@@ -61,15 +61,15 @@ class EvaluatorTest {
         }
 
         s = Stream.concat(s, Stream.of(
-                Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, false),
-                Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, false),
-                Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, true),
-                Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, true),
-                Arguments.of(SyntaxKind.BarBarToken, false, false),
-                Arguments.of(SyntaxKind.BarBarToken, true, false),
-                Arguments.of(SyntaxKind.BarBarToken, true, true),
-                Arguments.of(SyntaxKind.BarBarToken, false, true)
-            )
+                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, false),
+                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, false),
+                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, true),
+                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, true),
+                        Arguments.of(SyntaxKind.BarBarToken, false, false),
+                        Arguments.of(SyntaxKind.BarBarToken, true, false),
+                        Arguments.of(SyntaxKind.BarBarToken, true, true),
+                        Arguments.of(SyntaxKind.BarBarToken, false, true)
+                )
         );
 
         return s;
