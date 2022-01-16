@@ -1,59 +1,54 @@
 package Serpent;
 
-import Serpent.Syntax.*;
+import Serpent.Binder.BoundBinaryExpression;
+import Serpent.Binder.BoundExpression;
+import Serpent.Binder.BoundLiteralExpression;
+import Serpent.Binder.BoundUnaryExpression;
 
 import java.util.ArrayList;
 
 public class Evaluator {
-    private final SyntaxTree ast;
     private final ArrayList<String> diagnostics = new ArrayList<>();
+    private final BoundExpression rootExpression;
 
-    public Evaluator(SyntaxTree ast) {
-        this.ast = ast;
+    public Evaluator(BoundExpression rootExpression) {
+        this.rootExpression = rootExpression;
     }
 
-    public SyntaxTree getAst() {
-        return ast;
+    public Object evaluate() {
+        return evaluateExpression(rootExpression);
     }
 
-    public int evaluate() {
-        SyntaxNode root = ast.getRoot();
-        return evaluateExpression(root);
-    }
-
-    private int evaluateExpression(SyntaxNode node) {
-        if (node instanceof NumberExpression ne) {
-            return (int) ne.getValue();
-        } else if (node instanceof ParenthesizedExpression pe) {
-            return evaluateExpression(pe.getExpression());
-        } else if (node instanceof UnaryExpression ue) {
-            return switch (ue.getOperatorToken().getKind()) {
-                case PlusToken -> evaluateExpression(ue.getExpression());
-                case MinusToken -> -evaluateExpression(ue.getExpression());
-                default -> 0;
+    private Object evaluateExpression(BoundExpression node) {
+        if (node instanceof BoundLiteralExpression ble) {
+            return ble.getValue();
+        } else if (node instanceof BoundUnaryExpression bue) {
+            return switch (bue.getOperatorKind()) {
+                case Identity -> (int) evaluateExpression(bue.getOperand());
+                case Negation -> -(int) evaluateExpression(bue.getOperand());
             };
-        } else if (node instanceof BinaryExpression be) {
-            int left = evaluateExpression(be.getLeft());
-            int right = evaluateExpression(be.getRight());
-            switch (be.getOperatorToken().getKind()) {
-                case PlusToken -> {
-                    return left + right;
+        } else if (node instanceof BoundBinaryExpression bbe) {
+            Object left = evaluateExpression(bbe.getLeft());
+            Object right = evaluateExpression(bbe.getRight());
+            switch (bbe.getOperatorKind()) {
+                case Addition -> {
+                    return (int) left + (int) right;
                 }
-                case MinusToken -> {
-                    return left - right;
+                case Subtraction -> {
+                    return (int) left - (int) right;
                 }
-                case SlashToken -> {
-                    if (right == 0) {
+                case Division -> {
+                    if ((int) right == 0) {
                         diagnostics.add("[Eval. Error]: Division by zero.");
                         return 0;
                     }
-                    return left / right;
+                    return (int) left / (int) right;
                 }
-                case StarToken -> {
-                    return left * right;
+                case Multiplication -> {
+                    return (int) left * (int) right;
                 }
-                case CaretToken -> {
-                    return (int) Math.pow(left, right);
+                case Power -> {
+                    return (int) Math.pow((int) left, (int) right);
                 }
                 default -> {
                     diagnostics.add("[Eval. Error]: Unknown binary operator.");

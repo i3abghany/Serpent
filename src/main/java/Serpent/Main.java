@@ -1,5 +1,8 @@
 package Serpent;
 
+import Serpent.Binder.Binder;
+import Serpent.Binder.BoundExpression;
+import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.Parser;
 import Serpent.Syntax.SyntaxTree;
 
@@ -36,7 +39,19 @@ public class Main {
                 continue;
             }
 
-            Evaluator evaluator = new Evaluator(ast);
+            Binder binder = new Binder();
+            BoundExpression rootExpression = binder.bindExpression((ExpressionSyntax) ast.getRoot());
+            diagnostics.addAll(binder.getDiagnostics());
+
+            if (!diagnostics.isEmpty()){
+                for (String d : diagnostics) {
+                    System.out.println(d);
+                }
+                diagnostics.clear();
+                continue;
+            }
+
+            Evaluator evaluator = new Evaluator(rootExpression);
             diagnostics.addAll(evaluator.getDiagnostics());
 
             if (!diagnostics.isEmpty()){
