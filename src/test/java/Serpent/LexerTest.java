@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.common.ArgumentUtils;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -47,11 +45,11 @@ class LexerTest {
         Lexer lexer = new Lexer(expr);
         SyntaxToken[] tokens = new SyntaxToken[]{
                 new SyntaxToken(expr.indexOf("12312"), SyntaxKind.NumberToken, "12312", 12312),
-                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", "+"),
+                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
                 new SyntaxToken(expr.indexOf("5"), SyntaxKind.NumberToken, "5", 5),
-                new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", "*"),
+                new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", null),
                 new SyntaxToken(expr.indexOf("13"), SyntaxKind.NumberToken, "13", 13),
-                new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", "/"),
+                new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", null),
                 new SyntaxToken(expr.length() - 1, SyntaxKind.NumberToken, "2", 2),
         };
 
@@ -92,7 +90,7 @@ class LexerTest {
                 if (kind == SyntaxKind.TrueKeyword || kind == SyntaxKind.FalseKeyword) {
                     kinds.add(new KindInfo(kind, kind.text, kind == SyntaxKind.TrueKeyword));
                 } else {
-                    kinds.add(new KindInfo(kind, kind.text, kind.text));
+                    kinds.add(new KindInfo(kind, kind.text, null));
                 }
             }
         }

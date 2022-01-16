@@ -47,50 +47,39 @@ public class Lexer {
             return lexTextualToken();
         }
 
-        SyntaxKind kind;
+        String currentChar = Character.toString(current());
         switch (current()) {
-            case '*' -> kind = SyntaxKind.StarToken;
-            case '+' -> kind = SyntaxKind.PlusToken;
-            case '-' -> kind = SyntaxKind.MinusToken;
-            case '/' -> kind = SyntaxKind.SlashToken;
-            case '^' -> kind = SyntaxKind.CaretToken;
-            case '(' -> kind = SyntaxKind.OpenParenthesisToken;
-            case ')' -> kind = SyntaxKind.CloseParenthesisToken;
-            case '!' -> kind = SyntaxKind.BangToken;
-            case '&' -> {
+            case '*':
+                return new SyntaxToken(position++, SyntaxKind.StarToken, currentChar, null);
+            case '+':
+                return new SyntaxToken(position++, SyntaxKind.PlusToken, currentChar, null);
+            case '-':
+                return new SyntaxToken(position++, SyntaxKind.MinusToken, currentChar, null);
+            case '/':
+                return new SyntaxToken(position++, SyntaxKind.SlashToken, currentChar, null);
+            case '^':
+                return new SyntaxToken(position++, SyntaxKind.CaretToken, currentChar, null);
+            case '(':
+                return new SyntaxToken(position++, SyntaxKind.OpenParenthesisToken, currentChar, null);
+            case ')':
+                return new SyntaxToken(position++, SyntaxKind.CloseParenthesisToken, currentChar, null);
+            case '!':
+                return new SyntaxToken(position++, SyntaxKind.BangToken, currentChar, null);
+            case '&': {
                 if (lookahead() == '&') {
-                    kind = SyntaxKind.AmpersandAmpersandToken;
-                } else {
-                    kind = SyntaxKind.BadToken;
+                    position += 2;
+                    return new SyntaxToken(position - 2, SyntaxKind.AmpersandAmpersandToken, "&&", null);
                 }
             }
-
-            case '|' -> {
+            case '|': {
                 if (lookahead() == '|') {
-                    kind = SyntaxKind.BarBarToken;
-                } else {
-                    kind = SyntaxKind.BadToken;
+                    position += 2;
+                    return new SyntaxToken(position - 2, SyntaxKind.BarBarToken, "||", null);
                 }
             }
-            default -> kind = SyntaxKind.BadToken;
         }
-
-        if (kind == SyntaxKind.BadToken) {
-            diagnostics.add("[Lexer Error]: Unexpected token: " + current());
-        }
-
-        String tokenText = kind.text;
-        SyntaxToken ret;
-
-        if (tokenText != null) {
-            ret = new SyntaxToken(position, kind, tokenText, tokenText);
-            position += tokenText.length();
-        } else {
-            ret = new SyntaxToken(position, kind, Character.toString(current()), Character.toString(current()));
-            position++;
-        }
-
-        return ret;
+        diagnostics.add("[Lexer Error]: Unexpected token: " + current());
+        return new SyntaxToken(position++, SyntaxKind.BadToken, currentChar, null);
     }
 
     private SyntaxToken lexTextualToken() {
@@ -98,6 +87,10 @@ public class Lexer {
         while (Character.isLetter(current()))
             next();
         String tokenText = text.substring(start, position);
+        return constructTextualToken(start, tokenText);
+    }
+
+    private SyntaxToken constructTextualToken(int start, String tokenText) {
         SyntaxKind kind = SyntaxTraits.getTextualTokenKind(tokenText);
         return switch (kind) {
             case IdentifierToken -> new SyntaxToken(start, kind, tokenText, tokenText);
