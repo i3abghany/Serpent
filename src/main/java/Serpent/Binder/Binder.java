@@ -1,6 +1,11 @@
 package Serpent.Binder;
 
-import Serpent.Syntax.*;
+import Serpent.Syntax.BinaryExpression;
+import Serpent.Syntax.ExpressionSyntax;
+import Serpent.Syntax.LiteralExpression;
+import Serpent.Syntax.ParenthesizedExpression;
+import Serpent.Syntax.SyntaxKind;
+import Serpent.Syntax.UnaryExpression;
 
 import java.util.ArrayList;
 
