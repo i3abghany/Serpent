@@ -1,9 +1,6 @@
 package Serpent;
 
-import Serpent.Binder.BoundBinaryExpression;
-import Serpent.Binder.BoundExpression;
-import Serpent.Binder.BoundLiteralExpression;
-import Serpent.Binder.BoundUnaryExpression;
+import Serpent.Binder.*;
 
 import java.util.ArrayList;
 
@@ -22,6 +19,8 @@ public class Evaluator {
     private Object evaluateExpression(BoundExpression node) {
         if (node instanceof BoundLiteralExpression ble) {
             return ble.getValue();
+        } else if (node instanceof BoundParenthesizedExpression bpe) {
+            return evaluateExpression(bpe.getInnerExpression());
         } else if (node instanceof BoundUnaryExpression bue) {
             return switch (bue.getOperatorKind()) {
                 case Identity -> (int) evaluateExpression(bue.getOperand());

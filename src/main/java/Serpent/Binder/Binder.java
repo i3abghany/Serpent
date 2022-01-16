@@ -1,10 +1,6 @@
 package Serpent.Binder;
 
-import Serpent.Syntax.BinaryExpression;
-import Serpent.Syntax.ExpressionSyntax;
-import Serpent.Syntax.LiteralExpression;
-import Serpent.Syntax.SyntaxKind;
-import Serpent.Syntax.UnaryExpression;
+import Serpent.Syntax.*;
 
 import java.util.ArrayList;
 
@@ -19,10 +15,17 @@ public class Binder {
                 return bindLiteralExpression((LiteralExpression) syntax);
             case UnaryExpression:
                 return bindUnaryExpression((UnaryExpression) syntax);
+            case ParenthesizedExpression:
+                return bindParenthesizedExpression((ParenthesizedExpression) syntax);
             default:
                 diagnostics.add("[Binder Error]: Invalid expression " + syntax.getKind());
                 return null;
         }
+    }
+
+    private BoundExpression bindParenthesizedExpression(ParenthesizedExpression syntax) {
+        BoundExpression innerExpression = bindExpression(syntax.getExpression());
+        return new BoundParenthesizedExpression(innerExpression);
     }
 
     private BoundExpression bindUnaryExpression(UnaryExpression syntax) {

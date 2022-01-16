@@ -4,10 +4,10 @@ import java.util.List;
 
 public class ParenthesizedExpression extends ExpressionSyntax {
     private final SyntaxToken openParen;
-    private final SyntaxNode expression;
+    private final ExpressionSyntax expression;
     private final SyntaxToken closeParen;
 
-    public ParenthesizedExpression(SyntaxToken openParen, SyntaxNode expression, SyntaxToken closeParen) {
+    public ParenthesizedExpression(SyntaxToken openParen, ExpressionSyntax expression, SyntaxToken closeParen) {
         this.openParen = openParen;
         this.expression = expression;
         this.closeParen = closeParen;
@@ -27,7 +27,7 @@ public class ParenthesizedExpression extends ExpressionSyntax {
         return closeParen;
     }
 
-    public SyntaxNode getExpression() {
+    public ExpressionSyntax getExpression() {
         return expression;
     }
 
