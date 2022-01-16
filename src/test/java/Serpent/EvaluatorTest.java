@@ -1,5 +1,8 @@
 package Serpent;
 
+import Serpent.Binder.Binder;
+import Serpent.Binder.BoundExpression;
+import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.Parser;
 import Serpent.Syntax.SyntaxKind;
 import Serpent.Syntax.SyntaxTraits;
@@ -19,10 +22,13 @@ class EvaluatorTest {
     void evaluateSimpleBinaryExpressions(SyntaxKind operator, int a, int b) {
         String expr = String.format("%d %s %d", a, operator.text, b);
         SyntaxTree ast = new Parser(expr).parse();
+        Binder binder = new Binder();
+        BoundExpression rootExpression = binder.bindExpression((ExpressionSyntax) ast.getRoot());
+        Assertions.assertTrue(binder.getDiagnostics().isEmpty());
         switch (operator) {
-            case StarToken -> Assertions.assertEquals(a * b, new Evaluator(ast).evaluate());
+            case StarToken -> Assertions.assertEquals(a * b, new Evaluator(rootExpression).evaluate());
             case SlashToken -> {
-                Evaluator evaluator = new Evaluator(ast);
+                Evaluator evaluator = new Evaluator(rootExpression);
                 if (b == 0) {
                     evaluator.evaluate();
                     Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
@@ -30,9 +36,9 @@ class EvaluatorTest {
                     Assertions.assertEquals(a / b, evaluator.evaluate());
                 }
             }
-            case CaretToken -> Assertions.assertEquals((int) Math.pow(a, b), new Evaluator(ast).evaluate());
-            case MinusToken -> Assertions.assertEquals(a - b, new Evaluator(ast).evaluate());
-            case PlusToken -> Assertions.assertEquals(a + b, new Evaluator(ast).evaluate());
+            case CaretToken -> Assertions.assertEquals((int) Math.pow(a, b), new Evaluator(rootExpression).evaluate());
+            case MinusToken -> Assertions.assertEquals(a - b, new Evaluator(rootExpression).evaluate());
+            case PlusToken -> Assertions.assertEquals(a + b, new Evaluator(rootExpression).evaluate());
             default -> Assertions.fail();
         }
     }
@@ -47,7 +53,6 @@ class EvaluatorTest {
                 }
             }
         }
-
         return s;
     }
 }
