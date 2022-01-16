@@ -2,12 +2,12 @@ package Serpent.Binder;
 
 public class BoundBinaryExpression extends BoundExpression {
     private final BoundExpression left;
-    private final BoundBinayOperatorKind operatorKind;
+    private final BoundBinaryOperator boundOperator;
     private final BoundExpression right;
 
-    public BoundBinaryExpression(BoundExpression left, BoundBinayOperatorKind operatorKind, BoundExpression right) {
+    public BoundBinaryExpression(BoundExpression left, BoundBinaryOperator operatorKind, BoundExpression right) {
         this.left = left;
-        this.operatorKind = operatorKind;
+        this.boundOperator = operatorKind;
         this.right = right;
     }
 
@@ -15,8 +15,8 @@ public class BoundBinaryExpression extends BoundExpression {
         return left;
     }
 
-    public BoundBinayOperatorKind getOperatorKind() {
-        return operatorKind;
+    public BoundBinaryOperator getBoundOperator() {
+        return boundOperator;
     }
 
     public BoundExpression getRight() {

@@ -22,7 +22,7 @@ public class Evaluator {
         } else if (node instanceof BoundParenthesizedExpression bpe) {
             return evaluateExpression(bpe.getInnerExpression());
         } else if (node instanceof BoundUnaryExpression bue) {
-            return switch (bue.getOperatorKind()) {
+            return switch (bue.getBoundOperator().getOperatorKind()) {
                 case Identity -> (int) evaluateExpression(bue.getOperand());
                 case Negation -> -(int) evaluateExpression(bue.getOperand());
                 case LogicalNegation -> !(boolean) evaluateExpression(bue.getOperand());
@@ -30,7 +30,7 @@ public class Evaluator {
         } else if (node instanceof BoundBinaryExpression bbe) {
             Object left = evaluateExpression(bbe.getLeft());
             Object right = evaluateExpression(bbe.getRight());
-            switch (bbe.getOperatorKind()) {
+            switch (bbe.getBoundOperator().getOperatorKind()) {
                 case Addition -> {
                     return (int) left + (int) right;
                 }

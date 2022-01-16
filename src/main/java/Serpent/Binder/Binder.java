@@ -35,66 +35,27 @@ public class Binder {
 
     private BoundExpression bindUnaryExpression(UnaryExpression syntax) {
         BoundExpression boundOperand = bindExpression(syntax.getExpression());
-        BoundUnaryOperatorKind boundOperatorKind = bindUnaryOperator(syntax.getOperatorToken().getKind(), boundOperand.getValueType());
-        if (boundOperatorKind == null) {
+        SyntaxKind operatorKind = syntax.getOperatorToken().getKind();
+        BoundUnaryOperator boundOperator = BoundUnaryOperator.bind(operatorKind, boundOperand.getValueType());
+        if (boundOperator == null) {
+            TextSpan span = syntax.getOperatorToken().getSpan();
+            diagnostics.reportUndefinedUnaryOperator(span, boundOperand.getValueType(), operatorKind);
             return boundOperand;
         }
-        return new BoundUnaryExpression(boundOperatorKind, boundOperand);
-    }
-
-    private BoundUnaryOperatorKind bindUnaryOperator(SyntaxKind operatorKind, Class<?> operandType) {
-        if (operandType.equals(Integer.class)) {
-            switch (operatorKind) {
-                case PlusToken:
-                    return BoundUnaryOperatorKind.Identity;
-                case MinusToken:
-                    return BoundUnaryOperatorKind.Negation;
-            }
-        } else if (operandType.equals(Boolean.class)) {
-            if (operatorKind == SyntaxKind.BangToken) {
-                return BoundUnaryOperatorKind.LogicalNegation;
-            }
-        }
-
-        diagnostics.add("[Binder Error]: Unary operator " + operatorKind + " is not defined for " + operandType);
-        return null;
+        return new BoundUnaryExpression(boundOperator, boundOperand);
     }
 
     private BoundExpression bindBinaryExpression(BinaryExpression syntax) {
         BoundExpression boundLeft = bindExpression(syntax.getLeft());
         BoundExpression boundRight = bindExpression(syntax.getRight());
-        BoundBinayOperatorKind boundOperator = bindBinaryOperator(syntax.getOperatorToken().getKind(), boundLeft.getValueType(), boundRight.getValueType());
+        SyntaxKind operatorKind = syntax.getOperatorToken().getKind();
+        BoundBinaryOperator boundOperator = BoundBinaryOperator.bind(operatorKind, boundLeft.getValueType(), boundRight.getValueType());
         if (boundOperator == null) {
+            TextSpan opSpan = syntax.getOperatorToken().getSpan();
+            diagnostics.reportUndefinedBinaryOperator(opSpan, boundLeft.getValueType(), operatorKind, boundRight.getValueType());
             return boundLeft;
         }
         return new BoundBinaryExpression(boundLeft, boundOperator, boundRight);
-    }
-
-    private BoundBinayOperatorKind bindBinaryOperator(SyntaxKind operatorKind, Class<?> leftType, Class<?> rightType) {
-        if (leftType.equals(Integer.class) && rightType.equals(Integer.class)) {
-            switch (operatorKind) {
-                case PlusToken:
-                    return BoundBinayOperatorKind.Addition;
-                case MinusToken:
-                    return BoundBinayOperatorKind.Subtraction;
-                case StarToken:
-                    return BoundBinayOperatorKind.Multiplication;
-                case SlashToken:
-                    return BoundBinayOperatorKind.Division;
-                case CaretToken:
-                    return BoundBinayOperatorKind.Power;
-            }
-        } else if (leftType.equals(Boolean.class) && rightType.equals(Boolean.class)) {
-            switch (operatorKind) {
-                case AmpersandAmpersandToken:
-                    return BoundBinayOperatorKind.LogicalAnd;
-                case BarBarToken:
-                    return BoundBinayOperatorKind.LogicalOr;
-            }
-        }
-
-        diagnostics.add("[Binder Error]: Binary operator " + operatorKind + " is not defined for " + leftType + " and " + rightType);
-        return null;
     }
 
     private BoundExpression bindLiteralExpression(LiteralExpression syntax) {
@@ -102,12 +63,11 @@ public class Binder {
         if (value instanceof Integer || value instanceof Boolean) {
             return new BoundLiteralExpression(value);
         } else {
-            diagnostics.add("[Binder Error]: Invalid literal value " + value.getClass());
             return new BoundLiteralExpression(0);
         }
     }
 
-    public ArrayList<String> getDiagnostics() {
+    public DiagnosticList getDiagnostics() {
         return diagnostics;
     }
 }

@@ -2,11 +2,11 @@ package Serpent.Binder;
 
 public class BoundUnaryExpression extends BoundExpression {
 
-    private final BoundUnaryOperatorKind operatorKind;
+    private final BoundUnaryOperator boundOperator;
     private final BoundExpression operand;
 
-    public BoundUnaryExpression(BoundUnaryOperatorKind operatorKind, BoundExpression operand) {
-        this.operatorKind = operatorKind;
+    public BoundUnaryExpression(BoundUnaryOperator boundOperator, BoundExpression operand) {
+        this.boundOperator = boundOperator;
         this.operand = operand;
     }
 
@@ -24,7 +24,7 @@ public class BoundUnaryExpression extends BoundExpression {
         return BoundNodeKind.UnaryExpression;
     }
 
-    public BoundUnaryOperatorKind getOperatorKind() {
-        return operatorKind;
+    public BoundUnaryOperator getBoundOperator() {
+        return boundOperator;
     }
 }
