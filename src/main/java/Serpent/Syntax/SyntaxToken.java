@@ -1,5 +1,7 @@
 package Serpent.Syntax;
 
+import Serpent.TextSpan;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Collections;
@@ -9,6 +11,10 @@ public class SyntaxToken extends SyntaxNode {
     private final SyntaxKind kind;
     private final String text;
     private final Object value;
+
+    public TextSpan getSpan() {
+        return new TextSpan(position, text.length());
+    }
 
     @Override
     public boolean equals(Object o) {

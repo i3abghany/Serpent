@@ -1,16 +1,16 @@
 package Serpent.Binder;
 
+import Serpent.DiagnosticList;
 import Serpent.Syntax.BinaryExpression;
 import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.LiteralExpression;
 import Serpent.Syntax.ParenthesizedExpression;
 import Serpent.Syntax.SyntaxKind;
 import Serpent.Syntax.UnaryExpression;
-
-import java.util.ArrayList;
+import Serpent.TextSpan;
 
 public class Binder {
-    private final ArrayList<String> diagnostics = new ArrayList<>();
+    private final DiagnosticList diagnostics = new DiagnosticList();
 
     public BoundExpression bindExpression(ExpressionSyntax syntax) {
         switch (syntax.getKind()) {
@@ -23,7 +23,7 @@ public class Binder {
             case ParenthesizedExpression:
                 return bindParenthesizedExpression((ParenthesizedExpression) syntax);
             default:
-                diagnostics.add("[Binder Error]: Invalid expression " + syntax.getKind());
+                diagnostics.reportInvalidExpressionKind(null, syntax.getKind());
                 return null;
         }
     }

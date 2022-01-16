@@ -1,14 +1,15 @@
 package Serpent.Syntax;
 
-import java.util.ArrayList;
+import Serpent.DiagnosticList;
+
 import java.util.List;
 
 public class SyntaxTree {
     private final SyntaxNode root;
     private final SyntaxToken eofToken;
-    private final ArrayList<String> diagnostics;
+    private final DiagnosticList diagnostics;
 
-    public SyntaxTree(SyntaxNode root, SyntaxToken eofToken, ArrayList<String> diagnostics) {
+    public SyntaxTree(SyntaxNode root, SyntaxToken eofToken, DiagnosticList diagnostics) {
         this.root = root;
         this.eofToken = eofToken;
         this.diagnostics = diagnostics;
@@ -22,7 +23,7 @@ public class SyntaxTree {
         return eofToken;
     }
 
-    public ArrayList<String> getDiagnostics() {
+    public DiagnosticList getDiagnostics() {
         return diagnostics;
     }
 

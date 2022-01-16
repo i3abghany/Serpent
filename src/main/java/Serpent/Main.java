@@ -7,13 +7,12 @@ import Serpent.Syntax.Parser;
 import Serpent.Syntax.SyntaxTree;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     private final static String prompt = "> ";
     private final static String commandPrefix = "@";
-    private final static ArrayList<String> diagnostics = new ArrayList<>();
+    private final static DiagnosticList diagnostics = new DiagnosticList();
     private static boolean printTree = false;
 
     public static void main(String[] args) throws IOException {
@@ -37,7 +36,7 @@ public class Main {
             }
 
             if (!diagnostics.isEmpty()) {
-                for (String d : diagnostics) {
+                for (Diagnostic d : diagnostics) {
                     System.out.println(d);
                 }
                 diagnostics.clear();
@@ -49,7 +48,7 @@ public class Main {
             diagnostics.addAll(binder.getDiagnostics());
 
             if (!diagnostics.isEmpty()) {
-                for (String d : diagnostics) {
+                for (Diagnostic d : diagnostics) {
                     System.out.println(d);
                 }
                 diagnostics.clear();
@@ -60,7 +59,7 @@ public class Main {
             diagnostics.addAll(evaluator.getDiagnostics());
 
             if (!diagnostics.isEmpty()) {
-                for (String d : diagnostics) {
+                for (Diagnostic d : diagnostics) {
                     System.out.println(d);
                 }
                 diagnostics.clear();
@@ -84,7 +83,7 @@ public class Main {
                 printTree = !printTree;
                 break;
             default:
-                diagnostics.add("Unknown Command: " + line);
+                diagnostics.reportBadInternalCommand(line);
                 break;
         }
     }

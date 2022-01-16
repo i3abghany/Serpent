@@ -1,12 +1,14 @@
 package Serpent.Syntax;
 
+import Serpent.DiagnosticList;
+
 import java.util.ArrayList;
 
 public class Parser {
     private SyntaxToken[] tokenArray;
     private final String text;
     private int position;
-    private final ArrayList<String> diagnostics = new ArrayList<>();
+    private final DiagnosticList diagnostics = new DiagnosticList();
 
     public Parser(String text) {
         this.text = text;
@@ -109,7 +111,7 @@ public class Parser {
             return nextToken();
         }
 
-        diagnostics.add("[Parser Error]: Expected: " + kind + ", but found: " + current().getKind());
+        diagnostics.reportUnexpectedToken(current().getSpan(), current().getKind(), kind);
         return new SyntaxToken(current().getPosition(), kind, null, null);
     }
 }

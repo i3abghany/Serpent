@@ -1,18 +1,20 @@
 package Serpent.Syntax;
 
+import Serpent.DiagnosticList;
+
 import java.util.ArrayList;
 
 public class Lexer {
     private final String text;
     private int position;
-    private final ArrayList<String> diagnostics = new ArrayList<>();
+    private final DiagnosticList diagnostics = new DiagnosticList();
 
     public Lexer(String text) {
         this.text = text;
         this.position = 0;
     }
 
-    public ArrayList<String> getDiagnostics() {
+    public DiagnosticList getDiagnostics() {
         return diagnostics;
     }
 
@@ -78,7 +80,8 @@ public class Lexer {
                 }
             }
         }
-        diagnostics.add("[Lexer Error]: Unexpected token: " + current());
+
+        diagnostics.reportBadCharacterInput(position, current());
         return new SyntaxToken(position++, SyntaxKind.BadToken, currentChar, null);
     }
 

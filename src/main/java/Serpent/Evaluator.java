@@ -2,10 +2,8 @@ package Serpent;
 
 import Serpent.Binder.*;
 
-import java.util.ArrayList;
-
 public class Evaluator {
-    private final ArrayList<String> diagnostics = new ArrayList<>();
+    private final DiagnosticList diagnostics = new DiagnosticList();
     private final BoundExpression rootExpression;
 
     public Evaluator(BoundExpression rootExpression) {
@@ -39,7 +37,7 @@ public class Evaluator {
                 }
                 case Division -> {
                     if ((int) right == 0) {
-                        diagnostics.add("[Eval. Error]: Division by zero.");
+                        diagnostics.reportDivisionByZero();
                         return 0;
                     }
                     return (int) left / (int) right;
@@ -56,17 +54,14 @@ public class Evaluator {
                 case LogicalOr -> {
                     return (boolean) left || (boolean) right;
                 }
-                default -> {
-                    diagnostics.add("[Eval. Error]: Unknown binary operator.");
-                    return 0;
-                }
+                default -> throw new IllegalStateException("Unexpected value: " + bbe.getBoundOperator().getOperatorKind());
             }
         }
 
         return 0;
     }
 
-    public ArrayList<String> getDiagnostics() {
+    public DiagnosticList getDiagnostics() {
         return diagnostics;
     }
 }
