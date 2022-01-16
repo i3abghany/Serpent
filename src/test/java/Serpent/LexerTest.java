@@ -26,9 +26,9 @@ class LexerTest {
     void lexKeywords() {
         Lexer lexer = new Lexer("true false");
         SyntaxToken[] tokens = new SyntaxToken[]{
-                new SyntaxToken(0, SyntaxKind.TrueKeyword, "true", "true"),
+                new SyntaxToken(0, SyntaxKind.TrueKeyword, "true", true),
                 new SyntaxToken(4, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(5, SyntaxKind.FalseKeyword, "false", "false"),
+                new SyntaxToken(5, SyntaxKind.FalseKeyword, "false", false),
                 new SyntaxToken(10, SyntaxKind.EndOfFileToken, "\0", null)
         };
 
@@ -89,7 +89,11 @@ class LexerTest {
         ArrayList<KindInfo> kinds = new ArrayList<>();
         for (SyntaxKind kind : SyntaxKind.values()) {
             if (kind.text != null) {
-                kinds.add(new KindInfo(kind, kind.text, kind.text));
+                if (kind == SyntaxKind.TrueKeyword || kind == SyntaxKind.FalseKeyword) {
+                    kinds.add(new KindInfo(kind, kind.text, kind == SyntaxKind.TrueKeyword));
+                } else {
+                    kinds.add(new KindInfo(kind, kind.text, kind.text));
+                }
             }
         }
 
