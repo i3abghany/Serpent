@@ -20,7 +20,7 @@ public class Main {
 
         while (true) {
             System.out.print(prompt);
-            String line = scanner.nextLine();
+            String line = scanner.nextLine().trim();
 
             if (line.startsWith(commandPrefix)) {
                 handleCommand(line);
