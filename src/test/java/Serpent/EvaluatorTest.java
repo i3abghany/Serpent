@@ -94,7 +94,12 @@ class EvaluatorTest {
                         Assertions.assertEquals((a + b) - c, evaluator.evaluate());
                         break;
                     case "/":
-                        if (c != 0) Assertions.assertEquals((a + b) / c, evaluator.evaluate());
+                        if (c == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a + b) / c, evaluator.evaluate());
+                        }
                         break;
                     case "*":
                         Assertions.assertEquals((a + b) * c, evaluator.evaluate());
@@ -113,7 +118,12 @@ class EvaluatorTest {
                         Assertions.assertEquals((a - b) - c, evaluator.evaluate());
                         break;
                     case "/":
-                        if (c != 0) Assertions.assertEquals((a - b) / c, evaluator.evaluate());
+                        if (c == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a - b) / c, evaluator.evaluate());
+                        }
                         break;
                     case "*":
                         Assertions.assertEquals((a - b) * c, evaluator.evaluate());
@@ -126,19 +136,44 @@ class EvaluatorTest {
             case "/" -> {
                 switch (op2) {
                     case "+":
-                        if (b != 0) Assertions.assertEquals((a / b) + c, evaluator.evaluate());
+                        if (b == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a / b) + c, evaluator.evaluate());
+                        }
                         break;
                     case "-":
-                        if (b != 0) Assertions.assertEquals((a / b) - c, evaluator.evaluate());
+                        if (b == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a / b) - c, evaluator.evaluate());
+                        }
                         break;
                     case "/":
-                        if (c != 0 && b != 0) Assertions.assertEquals((a / b) / c, evaluator.evaluate());
+                        if (c == 0 || b == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a / b) / c, evaluator.evaluate());
+                        }
                         break;
                     case "*":
-                        if (b != 0) Assertions.assertEquals((a / b) * c, evaluator.evaluate());
+                        if (b == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a / b) * c, evaluator.evaluate());
+                        }
                         break;
                     case "^":
-                        if (b != 0) Assertions.assertEquals((int) Math.pow((a / b), c), evaluator.evaluate());
+                        if (b == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((int) Math.pow((a / b), c), evaluator.evaluate());
+                        }
                         break;
                 }
             }
@@ -151,8 +186,12 @@ class EvaluatorTest {
                         Assertions.assertEquals((a * b) - c, evaluator.evaluate());
                         break;
                     case "/":
-                        if (c != 0) Assertions.assertEquals((a * b) / c, evaluator.evaluate());
-                        break;
+                        if (c == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((a * b) / c, evaluator.evaluate());
+                        }
                     case "*":
                         Assertions.assertEquals((a * b) * c, evaluator.evaluate());
                         break;
@@ -170,8 +209,12 @@ class EvaluatorTest {
                         Assertions.assertEquals((int) Math.pow(a, b) - c, evaluator.evaluate());
                         break;
                     case "/":
-                        if (c != 0) Assertions.assertEquals((int) Math.pow(a, b) / c, evaluator.evaluate());
-                        break;
+                        if (c == 0) {
+                            evaluator.evaluate();
+                            Assertions.assertFalse(evaluator.getDiagnostics().isEmpty());
+                        } else {
+                            Assertions.assertEquals((int) Math.pow(a, b) / c, evaluator.evaluate());
+                        }
                     case "*":
                         Assertions.assertEquals((int) Math.pow(a, b) * c, evaluator.evaluate());
                         break;
