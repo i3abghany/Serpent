@@ -56,6 +56,7 @@ public class Main {
             }
 
             Evaluator evaluator = new Evaluator(rootExpression);
+            Object result = evaluator.evaluate();
             diagnostics.addAll(evaluator.getDiagnostics());
 
             if (!diagnostics.isEmpty()) {
@@ -66,7 +67,7 @@ public class Main {
                 continue;
             }
 
-            System.out.println(evaluator.evaluate());
+            System.out.println(result);
         }
     }
 
