@@ -33,11 +33,6 @@ public class DiagnosticList extends ArrayList<Diagnostic> {
         report(span, msg);
     }
 
-    public void reportInvalidLiteralValue(TextSpan span, Class<?> type) {
-        String msg = "Invalid literal value " + type;
-        report(span, msg);
-    }
-
     public void reportUnexpectedToken(TextSpan span, SyntaxKind found, SyntaxKind expected) {
         String msg = "Expected: " + expected + ", but found: " + found;
         report(span, msg);
