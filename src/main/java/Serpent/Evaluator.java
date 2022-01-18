@@ -17,20 +17,26 @@ public class Evaluator {
     }
 
     private Object evaluateExpression(BoundExpression node) {
-        if (node instanceof BoundLiteralExpression ble) {
+        if (node instanceof BoundLiteralExpression ble)
             return ble.getValue();
-        } else if (node instanceof BoundParenthesizedExpression bpe) {
+        else if (node instanceof BoundParenthesizedExpression bpe)
             return evaluateExpression(bpe.getInnerExpression());
-        } else if (node instanceof BoundUnaryExpression bue) {
-            return switch (bue.getBoundOperator().getOperatorKind()) {
+        else if (node instanceof BoundUnaryExpression bue) {
+            var op = bue.getBoundOperator().getOperatorKind();
+            return switch (op) {
                 case Identity -> (int) evaluateExpression(bue.getOperand());
                 case Negation -> -(int) evaluateExpression(bue.getOperand());
                 case LogicalNegation -> !(boolean) evaluateExpression(bue.getOperand());
+                default -> {
+                    throw new IllegalStateException("Invalid unary operator " + op);
+                }
             };
         } else if (node instanceof BoundBinaryExpression bbe) {
-            Object left = evaluateExpression(bbe.getLeft());
-            Object right = evaluateExpression(bbe.getRight());
-            switch (bbe.getBoundOperator().getOperatorKind()) {
+            var left = evaluateExpression(bbe.getLeft());
+            var right = evaluateExpression(bbe.getRight());
+            var op = bbe.getBoundOperator().getOperatorKind();
+
+            switch (op) {
                 case Addition -> {
                     return (int) left + (int) right;
                 }
@@ -62,11 +68,11 @@ public class Evaluator {
                 case NotEquals -> {
                     return !Objects.equals(left, right);
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + bbe.getBoundOperator().getOperatorKind());
+                default -> throw new IllegalStateException("Invalid binary operator" + op.getClass());
             }
+        } else {
+            throw new IllegalStateException("Invalid node type " + node.getClass());
         }
-
-        return 0;
     }
 
     public DiagnosticList getDiagnostics() {
