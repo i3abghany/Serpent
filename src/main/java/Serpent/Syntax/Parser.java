@@ -12,10 +12,10 @@ public class Parser {
 
     public Parser(String text) {
         this.text = text;
-        consumeAllTokens();
     }
 
     public SyntaxTree parse() {
+        consumeAllTokens();
         ExpressionSyntax expressionSyntax = parseExpression(0);
         SyntaxToken eof = matchToken(SyntaxKind.EndOfFileToken);
         return new SyntaxTree(expressionSyntax, eof, diagnostics);
