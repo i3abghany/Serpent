@@ -70,47 +70,39 @@ class LexerTest {
         }
     }
 
-    @Test
-    void lexSingleTokens() {
-        ArrayList<KindInfo> infos = getTokensWithText();
-
-        for (KindInfo kindInfo : infos) {
-            Lexer lexer = new Lexer(kindInfo.text);
-            Assertions.assertEquals(new SyntaxToken(0, kindInfo.kind, kindInfo.text, kindInfo.value), lexer.nextToken());
-        }
-
+    @ParameterizedTest
+    @MethodSource("getTokensWithText")
+    void lexSingleTokens(SyntaxKind kind, String text, Object value) {
+        Lexer lexer = new Lexer(text);
+        Assertions.assertEquals(new SyntaxToken(0, kind, text, value), lexer.nextToken());
     }
 
-    private record KindInfo(SyntaxKind kind, String text, Object value) {
-    }
-
-    private ArrayList<KindInfo> getTokensWithText() {
-        ArrayList<KindInfo> kinds = new ArrayList<>();
+    private static Stream<Arguments> getTokensWithText() {
+        Stream<Arguments> args = Stream.empty();
         for (SyntaxKind kind : SyntaxKind.values()) {
             if (kind.text != null) {
                 if (kind == SyntaxKind.TrueKeyword || kind == SyntaxKind.FalseKeyword) {
-                    kinds.add(new KindInfo(kind, kind.text, kind == SyntaxKind.TrueKeyword));
+                    args = Stream.concat(args, Stream.of(Arguments.of(kind, kind.text, kind == SyntaxKind.TrueKeyword)));
                 } else {
-                    kinds.add(new KindInfo(kind, kind.text, null));
+                    args = Stream.concat(args, Stream.of(Arguments.of(kind, kind.text, null)));
                 }
             }
         }
 
-        ArrayList<KindInfo> dynamicKinds = new ArrayList<>(List.of(
-                new KindInfo(SyntaxKind.NumberToken, "1", 1),
-                new KindInfo(SyntaxKind.NumberToken, "0", 0),
-                new KindInfo(SyntaxKind.NumberToken, "12345", 12345),
-                new KindInfo(SyntaxKind.IdentifierToken, "a", "a"),
-                new KindInfo(SyntaxKind.IdentifierToken, "ASD", "ASD"),
-                new KindInfo(SyntaxKind.WhitespaceToken, " ", null),
-                new KindInfo(SyntaxKind.WhitespaceToken, "\t", null),
-                new KindInfo(SyntaxKind.WhitespaceToken, "\t ", null),
-                new KindInfo(SyntaxKind.WhitespaceToken, "\n ", null),
-                new KindInfo(SyntaxKind.WhitespaceToken, "\r\n ", null)
+        args = Stream.concat(args, Stream.of(
+                Arguments.of(SyntaxKind.NumberToken, "1", 1),
+                Arguments.of(SyntaxKind.NumberToken, "0", 0),
+                Arguments.of(SyntaxKind.NumberToken, "12345", 12345),
+                Arguments.of(SyntaxKind.IdentifierToken, "a", "a"),
+                Arguments.of(SyntaxKind.IdentifierToken, "ASD", "ASD"),
+                Arguments.of(SyntaxKind.WhitespaceToken, " ", null),
+                Arguments.of(SyntaxKind.WhitespaceToken, "\t", null),
+                Arguments.of(SyntaxKind.WhitespaceToken, "\t ", null),
+                Arguments.of(SyntaxKind.WhitespaceToken, "\n ", null),
+                Arguments.of(SyntaxKind.WhitespaceToken, "\r\n ", null)
         ));
 
-        kinds.addAll(dynamicKinds);
-        return kinds;
+        return args;
     }
 
     @ParameterizedTest
