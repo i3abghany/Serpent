@@ -5,6 +5,7 @@ import Serpent.Binder.BoundExpression;
 import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.Parser;
 import Serpent.Syntax.SyntaxTree;
+import jdk.jshell.Diag;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -37,7 +38,7 @@ public class Main {
 
             if (!diagnostics.isEmpty()) {
                 for (Diagnostic d : diagnostics) {
-                    System.out.println(d);
+                    printDiagnostic(d, line);
                 }
                 diagnostics.clear();
                 continue;
@@ -49,7 +50,7 @@ public class Main {
 
             if (!diagnostics.isEmpty()) {
                 for (Diagnostic d : diagnostics) {
-                    System.out.println(d);
+                    printDiagnostic(d, line);
                 }
                 diagnostics.clear();
                 continue;
@@ -61,7 +62,7 @@ public class Main {
 
             if (!diagnostics.isEmpty()) {
                 for (Diagnostic d : diagnostics) {
-                    System.out.println(d);
+                    printDiagnostic(d, line);
                 }
                 diagnostics.clear();
                 continue;
@@ -87,5 +88,26 @@ public class Main {
                 diagnostics.reportBadInternalCommand(line);
                 break;
         }
+    }
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+
+    private static void printDiagnostic(Diagnostic diagnostic, String line) {
+
+        var span = diagnostic.getSpan();
+        System.out.println(diagnostic);
+
+        if (span == null || span.end() > line.length()) {
+            return;
+        }
+
+        var prefix = line.substring(0, span.start());
+        var err = line.substring(span.start(), span.end());
+        var suffix = line.substring(span.end());
+
+        System.out.print(prefix);
+        System.out.print(ANSI_RED + err + ANSI_RESET);
+        System.out.println(suffix);
     }
 }
