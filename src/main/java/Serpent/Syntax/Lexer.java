@@ -108,7 +108,7 @@ public class Lexer {
         return switch (kind) {
             case IdentifierToken -> new SyntaxToken(start, kind, tokenText, tokenText);
             case TrueKeyword, FalseKeyword -> new SyntaxToken(start, kind, tokenText, kind == SyntaxKind.TrueKeyword);
-            default -> null;
+            default -> throw new IllegalStateException("Invalid textual token kind " + kind);
         };
     }
 
