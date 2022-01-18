@@ -1,6 +1,10 @@
 package Serpent;
 
-import Serpent.Binder.*;
+import Serpent.Binder.BoundBinaryExpression;
+import Serpent.Binder.BoundExpression;
+import Serpent.Binder.BoundLiteralExpression;
+import Serpent.Binder.BoundParenthesizedExpression;
+import Serpent.Binder.BoundUnaryExpression;
 
 import java.util.Objects;
 
