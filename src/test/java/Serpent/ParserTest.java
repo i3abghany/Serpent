@@ -2,6 +2,7 @@ package Serpent;
 
 import Serpent.Syntax.*;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -73,5 +74,53 @@ public class ParserTest {
         }
 
         return s;
+    }
+
+    @Test
+    void testParenthesizedExpressionParsing() {
+        String expr = "(true && false)";
+
+        Parser parser = new Parser(expr);
+        SyntaxTree ast = parser.parse();
+        Assertions.assertTrue(ast.getDiagnostics().isEmpty());
+
+        SyntaxNode root = ast.getRoot();
+        Assertions.assertInstanceOf(ParenthesizedExpression.class, root);
+        Assertions.assertEquals(root.getKind(), SyntaxKind.ParenthesizedExpression);
+
+        List<SyntaxNode> children = root.getChildren();
+        Assertions.assertInstanceOf(SyntaxToken.class, children.get(0));
+        Assertions.assertInstanceOf(BinaryExpression.class, children.get(1));
+        Assertions.assertInstanceOf(SyntaxToken.class, children.get(2));
+
+        var pe = (ParenthesizedExpression) root;
+        Assertions.assertEquals(pe.getOpenParen(), children.get(0));
+        Assertions.assertEquals(pe.getExpression(), children.get(1));
+        Assertions.assertEquals(pe.getCloseParen(), children.get(2));
+    }
+
+    @Test
+    void testConsumedTokens() {
+        String expr = "(true && false) || 123  +    456";
+        Parser parser = new Parser(expr);
+        parser.parse();
+
+        var tokens = parser.getTokenArray();
+
+        SyntaxToken[] expectedTokens = new SyntaxToken[]{
+                new SyntaxToken(expr.indexOf('('), SyntaxKind.OpenParenthesisToken, "(", null),
+                new SyntaxToken(expr.indexOf("true"), SyntaxKind.TrueKeyword, "true", true),
+                new SyntaxToken(expr.indexOf("&&"), SyntaxKind.AmpersandAmpersandToken, "&&", null),
+                new SyntaxToken(expr.indexOf("false"), SyntaxKind.FalseKeyword, "false", false),
+                new SyntaxToken(expr.indexOf(")"), SyntaxKind.CloseParenthesisToken, ")", null),
+                new SyntaxToken(expr.indexOf("||"), SyntaxKind.BarBarToken, "||", null),
+                new SyntaxToken(expr.indexOf("123"), SyntaxKind.NumberToken, "123", 123),
+                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
+                new SyntaxToken(expr.indexOf("456"), SyntaxKind.NumberToken, "456", 456),
+        };
+
+        for (int i = 0; i < expectedTokens.length; i++) {
+            Assertions.assertEquals(expectedTokens[i], tokens[i]);
+        }
     }
 }
