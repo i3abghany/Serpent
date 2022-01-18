@@ -1,6 +1,6 @@
 package Serpent.Binder;
 
-public enum BoundBinayOperatorKind {
+public enum BoundBinaryOperatorKind {
     Addition,
     Subtraction,
     Multiplication,
