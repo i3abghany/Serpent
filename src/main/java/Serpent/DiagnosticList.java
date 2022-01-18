@@ -39,12 +39,12 @@ public class DiagnosticList extends ArrayList<Diagnostic> {
     }
 
     public void reportDivisionByZero() {
-        String msg = "[Evaluation Error]: Division by zero";
+        String msg = "Division by zero error.";
         report(null, msg);
     }
 
     public void reportBadInternalCommand(String command) {
-        String msg = "[REPL Error]: Invalid command '" + command + "'";
+        String msg = "Invalid command '" + command + "'";
         report(null, msg);
     }
 }
