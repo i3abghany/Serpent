@@ -5,7 +5,6 @@ import Serpent.Binder.BoundExpression;
 import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.Parser;
 import Serpent.Syntax.SyntaxTree;
-import jdk.jshell.Diag;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -25,6 +24,7 @@ public class Main {
 
             if (line.startsWith(commandPrefix)) {
                 handleCommand(line);
+                printAndClearDiagnostics(line);
                 continue;
             }
 
@@ -36,40 +36,35 @@ public class Main {
                 System.out.println(ast.toString());
             }
 
-            if (!diagnostics.isEmpty()) {
-                for (Diagnostic d : diagnostics) {
-                    printDiagnostic(d, line);
-                }
-                diagnostics.clear();
-                continue;
-            }
+            if (printAndClearDiagnostics(line)) continue;
 
             Binder binder = new Binder();
             BoundExpression rootExpression = binder.bindExpression((ExpressionSyntax) ast.getRoot());
             diagnostics.addAll(binder.getDiagnostics());
 
-            if (!diagnostics.isEmpty()) {
-                for (Diagnostic d : diagnostics) {
-                    printDiagnostic(d, line);
-                }
-                diagnostics.clear();
-                continue;
-            }
+            if (printAndClearDiagnostics(line)) continue;
 
             Evaluator evaluator = new Evaluator(rootExpression);
             Object result = evaluator.evaluate();
             diagnostics.addAll(evaluator.getDiagnostics());
 
-            if (!diagnostics.isEmpty()) {
-                for (Diagnostic d : diagnostics) {
-                    printDiagnostic(d, line);
-                }
-                diagnostics.clear();
-                continue;
-            }
+            if (printAndClearDiagnostics(line)) continue;
 
             System.out.println(result);
         }
+    }
+
+    private static boolean printAndClearDiagnostics(String line) {
+        if (diagnostics.isEmpty()) {
+            return false;
+        }
+
+        for (Diagnostic d : diagnostics) {
+            printDiagnostic(d, line);
+        }
+
+        diagnostics.clear();
+        return true;
     }
 
     private static void handleCommand(String line) throws IOException {
