@@ -71,8 +71,12 @@ class LexerTest {
     @ParameterizedTest
     @MethodSource("getTokensWithText")
     void lexSingleTokens(SyntaxKind kind, String text, Object value) {
-        Lexer lexer = new Lexer(text);
-        Assertions.assertEquals(new SyntaxToken(0, kind, text, value), lexer.nextToken());
+        var lexer = new Lexer(text);
+        var token = lexer.nextToken();
+        Assertions.assertEquals(new SyntaxToken(0, kind, text, value), token);
+
+        var eof = new SyntaxToken(token.getSpan().end(), SyntaxKind.EndOfFileToken, "\0", null);
+        Assertions.assertEquals(eof, lexer.nextToken());
     }
 
     private static Stream<Arguments> getTokensWithText() {
