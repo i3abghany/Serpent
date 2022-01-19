@@ -13,7 +13,7 @@ public class DiagnosticList extends ArrayList<Diagnostic> {
     }
 
     public void reportBadCharacterInput(int position, char character) {
-        String msg = "Unexpected character " + character;
+        String msg = "Unexpected character '" + character + "'";
         TextSpan span = new TextSpan(position, 1);
         report(span, msg);
     }
