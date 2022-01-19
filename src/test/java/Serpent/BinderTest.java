@@ -35,26 +35,26 @@ public class BinderTest {
 
     private static Stream<Arguments> providesBinaryOperatorsAndWrongOperands() {
         return Stream.of(
-                Arguments.of(1, "+", true),
-                Arguments.of(true, "+", 1),
-                Arguments.of(2, "||", 1),
-                Arguments.of(false, "||", 1),
-                Arguments.of(true, "&&", 1),
-                Arguments.of(2, "&&", false),
-                Arguments.of(2, "==", false),
-                Arguments.of(false, "==", 1),
-                Arguments.of(true, "!=", 1),
-                Arguments.of(4, "!=", true)
+            Arguments.of(1, "+", true),
+            Arguments.of(true, "+", 1),
+            Arguments.of(2, "||", 1),
+            Arguments.of(false, "||", 1),
+            Arguments.of(true, "&&", 1),
+            Arguments.of(2, "&&", false),
+            Arguments.of(2, "==", false),
+            Arguments.of(false, "==", 1),
+            Arguments.of(true, "!=", 1),
+            Arguments.of(4, "!=", true)
         );
     }
 
     private static Stream<Arguments> providesUnaryOperatorsAndWrongOperand() {
         return Stream.of(
-                Arguments.of("-", true),
-                Arguments.of("+", false),
-                Arguments.of("!", 6543),
-                Arguments.of("!", -6543),
-                Arguments.of("!", 0)
+            Arguments.of("-", true),
+            Arguments.of("+", false),
+            Arguments.of("!", 6543),
+            Arguments.of("!", -6543),
+            Arguments.of("!", 0)
         );
     }
 

@@ -107,16 +107,16 @@ public class ParserTest {
 
         var tokens = parser.getTokenArray();
 
-        SyntaxToken[] expectedTokens = new SyntaxToken[]{
-                new SyntaxToken(expr.indexOf('('), SyntaxKind.OpenParenthesisToken, "(", null),
-                new SyntaxToken(expr.indexOf("true"), SyntaxKind.TrueKeyword, "true", true),
-                new SyntaxToken(expr.indexOf("&&"), SyntaxKind.AmpersandAmpersandToken, "&&", null),
-                new SyntaxToken(expr.indexOf("false"), SyntaxKind.FalseKeyword, "false", false),
-                new SyntaxToken(expr.indexOf(")"), SyntaxKind.CloseParenthesisToken, ")", null),
-                new SyntaxToken(expr.indexOf("||"), SyntaxKind.BarBarToken, "||", null),
-                new SyntaxToken(expr.indexOf("123"), SyntaxKind.NumberToken, "123", 123),
-                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
-                new SyntaxToken(expr.indexOf("456"), SyntaxKind.NumberToken, "456", 456),
+        SyntaxToken[] expectedTokens = new SyntaxToken[] {
+            new SyntaxToken(expr.indexOf('('), SyntaxKind.OpenParenthesisToken, "(", null),
+            new SyntaxToken(expr.indexOf("true"), SyntaxKind.TrueKeyword, "true", true),
+            new SyntaxToken(expr.indexOf("&&"), SyntaxKind.AmpersandAmpersandToken, "&&", null),
+            new SyntaxToken(expr.indexOf("false"), SyntaxKind.FalseKeyword, "false", false),
+            new SyntaxToken(expr.indexOf(")"), SyntaxKind.CloseParenthesisToken, ")", null),
+            new SyntaxToken(expr.indexOf("||"), SyntaxKind.BarBarToken, "||", null),
+            new SyntaxToken(expr.indexOf("123"), SyntaxKind.NumberToken, "123", 123),
+            new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
+            new SyntaxToken(expr.indexOf("456"), SyntaxKind.NumberToken, "456", 456),
         };
 
         for (int i = 0; i < expectedTokens.length; i++) {
