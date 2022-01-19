@@ -51,4 +51,12 @@ public final class SyntaxTraits {
         list.addAll(getLogicalBinaryOperators());
         return list;
     }
+
+    public static List<SyntaxKind> getArithmeticUnaryOperators() {
+        return List.of(SyntaxKind.PlusToken, SyntaxKind.MinusToken);
+    }
+
+    public static List<SyntaxKind> getLogicalUnaryOperators() {
+        return List.of(SyntaxKind.BangToken);
+    }
 }

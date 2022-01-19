@@ -61,15 +61,15 @@ class EvaluatorTest {
         }
 
         s = Stream.concat(s, Stream.of(
-                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, false),
-                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, false),
-                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, true),
-                        Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, true),
-                        Arguments.of(SyntaxKind.BarBarToken, false, false),
-                        Arguments.of(SyntaxKind.BarBarToken, true, false),
-                        Arguments.of(SyntaxKind.BarBarToken, true, true),
-                        Arguments.of(SyntaxKind.BarBarToken, false, true)
-                )
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, false),
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, false),
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, true, true),
+                Arguments.of(SyntaxKind.AmpersandAmpersandToken, false, true),
+                Arguments.of(SyntaxKind.BarBarToken, false, false),
+                Arguments.of(SyntaxKind.BarBarToken, true, false),
+                Arguments.of(SyntaxKind.BarBarToken, true, true),
+                Arguments.of(SyntaxKind.BarBarToken, false, true)
+            )
         );
 
         return s;
@@ -244,5 +244,39 @@ class EvaluatorTest {
         }
 
         return s;
+    }
+
+    @ParameterizedTest
+    @MethodSource("providesUnaryExpressions")
+    void testUnaryExpressions(String operator, Object operand) {
+        var expr = String.format("%s" + operand, operator);
+        var ast = new Parser(expr).parse();
+        var boundExpr = new Binder().bindExpression((ExpressionSyntax) ast.getRoot());
+        var evaluator = new Evaluator(boundExpr);
+        Assertions.assertTrue(evaluator.getDiagnostics().isEmpty());
+        var result = evaluator.evaluate();
+
+        switch (operator) {
+            case "+" -> Assertions.assertEquals(operand, result);
+            case "-" -> Assertions.assertEquals(-(int) operand, result);
+            case "!" -> Assertions.assertEquals(!(boolean) operand, result);
+            default -> Assertions.fail();
+        }
+    }
+
+    public static Stream<Arguments> providesUnaryExpressions() {
+        Stream<Arguments> args = Stream.empty();
+        for (var op : SyntaxTraits.getArithmeticUnaryOperators()) {
+            for (int i = -1; i <= 1; i++) {
+                args = Stream.concat(args, Stream.of(Arguments.of(op.text, i)));
+            }
+        }
+
+        for (var op : SyntaxTraits.getLogicalUnaryOperators()) {
+            args = Stream.concat(args, Stream.of(Arguments.of(op.text, true)));
+            args = Stream.concat(args, Stream.of(Arguments.of(op.text, false)));
+        }
+
+        return args;
     }
 }
