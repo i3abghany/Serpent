@@ -19,11 +19,11 @@ public class BoundUnaryOperator {
         this(syntaxKind, operatorKind, type, type);
     }
 
-    private static final BoundUnaryOperator[] ops = new BoundUnaryOperator[]{
-            new BoundUnaryOperator(SyntaxKind.PlusToken, BoundUnaryOperatorKind.Identity, Integer.class),
-            new BoundUnaryOperator(SyntaxKind.MinusToken, BoundUnaryOperatorKind.Negation, Integer.class),
+    private static final BoundUnaryOperator[] ops = new BoundUnaryOperator[] {
+        new BoundUnaryOperator(SyntaxKind.PlusToken, BoundUnaryOperatorKind.Identity, Integer.class),
+        new BoundUnaryOperator(SyntaxKind.MinusToken, BoundUnaryOperatorKind.Negation, Integer.class),
 
-            new BoundUnaryOperator(SyntaxKind.BangToken, BoundUnaryOperatorKind.LogicalNegation, Boolean.class),
+        new BoundUnaryOperator(SyntaxKind.BangToken, BoundUnaryOperatorKind.LogicalNegation, Boolean.class),
     };
 
     public static BoundUnaryOperator bind(SyntaxKind kind, Class<?> operandType) {

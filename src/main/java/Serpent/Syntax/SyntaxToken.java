@@ -22,10 +22,10 @@ public class SyntaxToken extends SyntaxNode {
         if (o == null || getClass() != o.getClass()) return false;
         SyntaxToken that = (SyntaxToken) o;
         return position == that.getPosition() &&
-                kind == that.getKind() &&
-                text.equals(that.getText()) &&
-                Objects.equals(value, that.getValue()) &&
-                getChildren().equals(that.getChildren());
+            kind == that.getKind() &&
+            text.equals(that.getText()) &&
+            Objects.equals(value, that.getValue()) &&
+            getChildren().equals(that.getChildren());
     }
 
     @Override
@@ -65,10 +65,10 @@ public class SyntaxToken extends SyntaxNode {
     @Override
     public String toString() {
         return "SyntaxToken{" +
-                "position=" + position +
-                ", kind=" + kind +
-                ", text='" + text + '\'' +
-                ", value=" + value +
-                '}';
+            "position=" + position +
+            ", kind=" + kind +
+            ", text='" + text + '\'' +
+            ", value=" + value +
+            '}';
     }
 }

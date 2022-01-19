@@ -21,11 +21,11 @@ class LexerTest {
     @Test
     void lexKeywords() {
         Lexer lexer = new Lexer("true false");
-        SyntaxToken[] tokens = new SyntaxToken[]{
-                new SyntaxToken(0, SyntaxKind.TrueKeyword, "true", true),
-                new SyntaxToken(4, SyntaxKind.WhitespaceToken, " ", null),
-                new SyntaxToken(5, SyntaxKind.FalseKeyword, "false", false),
-                new SyntaxToken(10, SyntaxKind.EndOfFileToken, "\0", null)
+        SyntaxToken[] tokens = new SyntaxToken[] {
+            new SyntaxToken(0, SyntaxKind.TrueKeyword, "true", true),
+            new SyntaxToken(4, SyntaxKind.WhitespaceToken, " ", null),
+            new SyntaxToken(5, SyntaxKind.FalseKeyword, "false", false),
+            new SyntaxToken(10, SyntaxKind.EndOfFileToken, "\0", null)
         };
 
         int i = 0;
@@ -41,14 +41,14 @@ class LexerTest {
     void lexWhitespaceSeparatedArithmeticExpression() {
         String expr = "12312 + 5 * 13 / 2";
         Lexer lexer = new Lexer(expr);
-        SyntaxToken[] tokens = new SyntaxToken[]{
-                new SyntaxToken(expr.indexOf("12312"), SyntaxKind.NumberToken, "12312", 12312),
-                new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
-                new SyntaxToken(expr.indexOf("5"), SyntaxKind.NumberToken, "5", 5),
-                new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", null),
-                new SyntaxToken(expr.indexOf("13"), SyntaxKind.NumberToken, "13", 13),
-                new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", null),
-                new SyntaxToken(expr.length() - 1, SyntaxKind.NumberToken, "2", 2),
+        SyntaxToken[] tokens = new SyntaxToken[] {
+            new SyntaxToken(expr.indexOf("12312"), SyntaxKind.NumberToken, "12312", 12312),
+            new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
+            new SyntaxToken(expr.indexOf("5"), SyntaxKind.NumberToken, "5", 5),
+            new SyntaxToken(expr.indexOf("*"), SyntaxKind.StarToken, "*", null),
+            new SyntaxToken(expr.indexOf("13"), SyntaxKind.NumberToken, "13", 13),
+            new SyntaxToken(expr.indexOf("/"), SyntaxKind.SlashToken, "/", null),
+            new SyntaxToken(expr.length() - 1, SyntaxKind.NumberToken, "2", 2),
         };
 
         int i = 0;
@@ -88,16 +88,16 @@ class LexerTest {
         }
 
         args = Stream.concat(args, Stream.of(
-                Arguments.of(SyntaxKind.NumberToken, "1", 1),
-                Arguments.of(SyntaxKind.NumberToken, "0", 0),
-                Arguments.of(SyntaxKind.NumberToken, "12345", 12345),
-                Arguments.of(SyntaxKind.IdentifierToken, "a", "a"),
-                Arguments.of(SyntaxKind.IdentifierToken, "ASD", "ASD"),
-                Arguments.of(SyntaxKind.WhitespaceToken, " ", null),
-                Arguments.of(SyntaxKind.WhitespaceToken, "\t", null),
-                Arguments.of(SyntaxKind.WhitespaceToken, "\t ", null),
-                Arguments.of(SyntaxKind.WhitespaceToken, "\n ", null),
-                Arguments.of(SyntaxKind.WhitespaceToken, "\r\n ", null)
+            Arguments.of(SyntaxKind.NumberToken, "1", 1),
+            Arguments.of(SyntaxKind.NumberToken, "0", 0),
+            Arguments.of(SyntaxKind.NumberToken, "12345", 12345),
+            Arguments.of(SyntaxKind.IdentifierToken, "a", "a"),
+            Arguments.of(SyntaxKind.IdentifierToken, "ASD", "ASD"),
+            Arguments.of(SyntaxKind.WhitespaceToken, " ", null),
+            Arguments.of(SyntaxKind.WhitespaceToken, "\t", null),
+            Arguments.of(SyntaxKind.WhitespaceToken, "\t ", null),
+            Arguments.of(SyntaxKind.WhitespaceToken, "\n ", null),
+            Arguments.of(SyntaxKind.WhitespaceToken, "\r\n ", null)
         ));
 
         return args;
@@ -114,15 +114,15 @@ class LexerTest {
 
     private static Stream<Arguments> providesBadTokens() {
         return Stream.of(
-                Arguments.of("@"),
-                Arguments.of("#"),
-                Arguments.of("$"),
-                Arguments.of("&"),
-                Arguments.of("_"),
-                Arguments.of("\\"),
-                Arguments.of("×"),
-                Arguments.of("ٍ"),
-                Arguments.of("©")
+            Arguments.of("@"),
+            Arguments.of("#"),
+            Arguments.of("$"),
+            Arguments.of("&"),
+            Arguments.of("_"),
+            Arguments.of("\\"),
+            Arguments.of("×"),
+            Arguments.of("ٍ"),
+            Arguments.of("©")
         );
     }
 }
