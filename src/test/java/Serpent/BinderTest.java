@@ -4,7 +4,6 @@ import Serpent.Binder.Binder;
 import Serpent.Binder.BoundExpression;
 import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.Parser;
-import Serpent.Syntax.SyntaxToken;
 import Serpent.Syntax.SyntaxTree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
