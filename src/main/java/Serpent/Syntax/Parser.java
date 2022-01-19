@@ -16,6 +16,11 @@ public class Parser {
 
     public SyntaxTree parse() {
         consumeAllTokens();
+
+        if (!diagnostics.isEmpty()) {
+            return new SyntaxTree(null, null, diagnostics);
+        }
+
         ExpressionSyntax expressionSyntax = parseExpression(0);
         SyntaxToken eof = matchToken(SyntaxKind.EndOfFileToken);
         return new SyntaxTree(expressionSyntax, eof, diagnostics);
