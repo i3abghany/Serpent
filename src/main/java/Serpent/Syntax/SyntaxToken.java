@@ -21,7 +21,11 @@ public class SyntaxToken extends SyntaxNode {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SyntaxToken that = (SyntaxToken) o;
-        return position == that.position && kind == that.kind && text.equals(that.text) && Objects.equals(value, that.value);
+        return position == that.getPosition() &&
+                kind == that.getKind() &&
+                text.equals(that.getText()) &&
+                Objects.equals(value, that.getValue()) &&
+                getChildren().equals(that.getChildren());
     }
 
     @Override
