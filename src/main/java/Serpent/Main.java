@@ -95,7 +95,7 @@ public class Main {
 
     private static void printDiagnostic(Diagnostic diagnostic, String line) {
 
-        var span = diagnostic.getSpan();
+        var span = diagnostic.span();
         System.out.println(diagnostic);
 
         if (span == null || span.end() > line.length()) {
