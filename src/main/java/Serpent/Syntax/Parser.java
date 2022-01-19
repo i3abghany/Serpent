@@ -24,22 +24,21 @@ public class Parser {
     private ExpressionSyntax parsePrimaryExpression() {
         switch (current().getKind()) {
             case OpenParenthesisToken -> {
-                SyntaxToken openParen = nextToken();
-                ExpressionSyntax expr = parseExpression(0);
-                SyntaxToken closedParen = nextToken();
-                return new ParenthesizedExpression(openParen, expr, closedParen);
+                var openParen = matchToken(SyntaxKind.OpenParenthesisToken);
+                var innerExpr = parseExpression(0);
+                var closeParen = matchToken(SyntaxKind.CloseParenthesisToken);
+                return new ParenthesizedExpression(openParen, innerExpr, closeParen);
+            }
+            case NumberToken -> {
+                var numberToken = matchToken(SyntaxKind.NumberToken);
+                return new LiteralExpression(numberToken);
+            }
+            case TrueKeyword, FalseKeyword -> {
+                var booleanToken = nextToken();
+                return new LiteralExpression(booleanToken);
             }
             default -> {
-                if (current().getKind() == SyntaxKind.NumberToken) {
-                    SyntaxToken numberToken = matchToken(SyntaxKind.NumberToken);
-                    return new LiteralExpression(numberToken);
-                } else if (current().getKind() == SyntaxKind.TrueKeyword ||
-                        current().getKind() == SyntaxKind.FalseKeyword) {
-                    SyntaxToken booleanToken = nextToken();
-                    return new LiteralExpression(booleanToken);
-                } else {
-                    return new LiteralExpression(matchToken(SyntaxKind.LiteralExpression));
-                }
+                return new LiteralExpression(matchToken(SyntaxKind.LiteralExpression));
             }
         }
     }
