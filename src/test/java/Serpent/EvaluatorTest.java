@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -23,11 +24,11 @@ class EvaluatorTest {
     void evaluateSimpleExpressions(SyntaxKind operator, Object a, Object b) {
         String expr = String.format(a + " %s " + b, operator.text);
         SyntaxTree ast = new Parser(expr).parse();
-        Binder binder = new Binder();
+        Binder binder = new Binder(new HashMap<>());
         BoundExpression rootExpression = binder.bindExpression((ExpressionSyntax) ast.getRoot());
         Assertions.assertTrue(binder.getDiagnostics().isEmpty());
 
-        Evaluator evaluator = new Evaluator(rootExpression);
+        Evaluator evaluator = new Evaluator(rootExpression, new HashMap<>());
         switch (operator) {
             case StarToken -> Assertions.assertEquals((int) a * (int) b, evaluator.evaluate());
             case SlashToken -> {
@@ -81,8 +82,8 @@ class EvaluatorTest {
     void testArithmeticParenthesizedExpressions(int a, int b, int c, String op1, String op2) {
         String expr = "(" + a + op1 + b + ")" + op2 + c;
         Parser parser = new Parser(expr);
-        Binder binder = new Binder();
-        Evaluator evaluator = new Evaluator(binder.bindExpression((ExpressionSyntax) parser.parse().getRoot()));
+        Binder binder = new Binder(new HashMap<>());
+        Evaluator evaluator = new Evaluator(binder.bindExpression((ExpressionSyntax) parser.parse().getRoot()), new HashMap<>());
 
         switch (op1) {
             case "+" -> {
@@ -251,8 +252,8 @@ class EvaluatorTest {
     void testUnaryExpressions(String operator, Object operand) {
         var expr = String.format("%s" + operand, operator);
         var ast = new Parser(expr).parse();
-        var boundExpr = new Binder().bindExpression((ExpressionSyntax) ast.getRoot());
-        var evaluator = new Evaluator(boundExpr);
+        var boundExpr = new Binder(new HashMap<>()).bindExpression((ExpressionSyntax) ast.getRoot());
+        var evaluator = new Evaluator(boundExpr, new HashMap<>());
         Assertions.assertTrue(evaluator.getDiagnostics().isEmpty());
         var result = evaluator.evaluate();
 

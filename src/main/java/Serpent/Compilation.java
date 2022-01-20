@@ -4,13 +4,16 @@ import Serpent.Binder.Binder;
 import Serpent.Syntax.ExpressionSyntax;
 import Serpent.Syntax.SyntaxTree;
 
+import java.util.Map;
+
 public class Compilation {
 
-    private SyntaxTree syntaxTree;
+    private final SyntaxTree syntaxTree;
+    private final Map<String, Object> variables;
 
-    public Compilation(SyntaxTree syntaxTree) {
+    public Compilation(SyntaxTree syntaxTree, Map<String, Object> variables) {
         this.syntaxTree = syntaxTree;
-
+        this.variables = variables;
     }
 
     public SyntaxTree getSyntaxTree() {
@@ -23,7 +26,7 @@ public class Compilation {
             return new EvaluationResult(null, diagnostics);
         }
 
-        var binder = new Binder();
+        var binder = new Binder(variables);
         var boundExpression = binder.bindExpression((ExpressionSyntax) syntaxTree.getRoot());
         diagnostics = binder.getDiagnostics();
 
@@ -31,7 +34,7 @@ public class Compilation {
             return new EvaluationResult(null, diagnostics);
         }
 
-        var evaluator = new Evaluator(boundExpression);
+        var evaluator = new Evaluator(boundExpression, variables);
         var result = evaluator.evaluate();
         diagnostics = evaluator.getDiagnostics();
 
@@ -40,5 +43,9 @@ public class Compilation {
         }
 
         return new EvaluationResult(result, diagnostics);
+    }
+
+    public Map<String, Object> getVariables() {
+        return variables;
     }
 }

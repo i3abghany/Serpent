@@ -47,4 +47,9 @@ public class DiagnosticList extends ArrayList<Diagnostic> {
         String msg = "Invalid command '" + command + "'";
         report(null, msg);
     }
+
+    public void reportUndefinedName(TextSpan span, String name) {
+        var msg = "Undefined variable " + name;
+        report(span, msg);
+    }
 }

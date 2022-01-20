@@ -1,19 +1,18 @@
 package Serpent;
 
-import Serpent.Binder.BoundBinaryExpression;
-import Serpent.Binder.BoundExpression;
-import Serpent.Binder.BoundLiteralExpression;
-import Serpent.Binder.BoundParenthesizedExpression;
-import Serpent.Binder.BoundUnaryExpression;
+import Serpent.Binder.*;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Evaluator {
     private final DiagnosticList diagnostics = new DiagnosticList();
     private final BoundExpression rootExpression;
+    private final Map<String, Object> variables;
 
-    public Evaluator(BoundExpression rootExpression) {
+    public Evaluator(BoundExpression rootExpression, Map<String, Object> variables) {
         this.rootExpression = rootExpression;
+        this.variables = variables;
     }
 
     public Object evaluate() {
@@ -25,7 +24,13 @@ public class Evaluator {
             return ble.getValue();
         else if (node instanceof BoundParenthesizedExpression bpe)
             return evaluateExpression(bpe.getInnerExpression());
-        else if (node instanceof BoundUnaryExpression bue) {
+        else if (node instanceof BoundVariableExpression bve)
+            return variables.get(bve.getName());
+        else if (node instanceof BoundAssignmentExpression bae) {
+            var value = evaluateExpression(bae.getBoundExpression());
+            variables.put(bae.getName(), value);
+            return value;
+        } else if (node instanceof BoundUnaryExpression bue) {
             var op = bue.getBoundOperator().getOperatorKind();
             return switch (op) {
                 case Identity -> (int) evaluateExpression(bue.getOperand());
@@ -81,5 +86,9 @@ public class Evaluator {
 
     public DiagnosticList getDiagnostics() {
         return diagnostics;
+    }
+
+    public Map<String, Object> getVariables() {
+        return variables;
     }
 }

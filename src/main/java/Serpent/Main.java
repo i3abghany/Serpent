@@ -4,12 +4,14 @@ import Serpent.Syntax.Parser;
 import Serpent.Syntax.SyntaxTree;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
     private final static String prompt = "> ";
     private final static String commandPrefix = "@";
     private static DiagnosticList diagnostics = new DiagnosticList();
+    private static final HashMap<String, Object> variables = new HashMap<>();
     private static boolean printTree = false;
 
     public static void main(String[] args) throws IOException {
@@ -28,7 +30,7 @@ public class Main {
             Parser parser = new Parser(line);
             SyntaxTree ast = parser.parse();
 
-            var evaluationResult = new Compilation(ast).evaluate();
+            var evaluationResult = new Compilation(ast, variables).evaluate();
             diagnostics = evaluationResult.getDiagnostics();
 
             if (diagnostics.isEmpty()) {

@@ -76,17 +76,21 @@ public class Lexer {
                     position += 2;
                     return new SyntaxToken(position - 2, SyntaxKind.AmpersandAmpersandToken, "&&", null);
                 }
+                break;
             }
             case '|': {
                 if (lookahead() == '|') {
                     position += 2;
                     return new SyntaxToken(position - 2, SyntaxKind.BarBarToken, "||", null);
                 }
+                break;
             }
             case '=': {
                 if (lookahead() == '=') {
                     position += 2;
                     return new SyntaxToken(position - 2, SyntaxKind.EqualsEqualsToken, "==", null);
+                } else {
+                    return new SyntaxToken(position++, SyntaxKind.EqualsToken, "=", null);
                 }
             }
         }

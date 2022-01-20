@@ -126,4 +126,27 @@ public class ParserTest {
 
         Assertions.assertEquals(ast.getEofToken(), expectedTokens[expectedTokens.length - 1]);
     }
+
+    @Test
+    void parseAssignmentExpression() {
+        var expr = "a = 2";
+        var parser = new Parser(expr);
+        var ast = parser.parse();
+        Assertions.assertTrue(ast.getDiagnostics().isEmpty());
+
+        var root = ast.getRoot();
+        Assertions.assertInstanceOf(AssignmentExpressionSyntax.class, root);
+        Assertions.assertEquals(root.getKind(), SyntaxKind.AssignmentExpression);
+
+        var children = root.getChildren();
+
+        Assertions.assertInstanceOf(SyntaxToken.class, children.get(0));
+        Assertions.assertEquals(SyntaxKind.IdentifierToken, children.get(0).getKind());
+
+        Assertions.assertInstanceOf(SyntaxToken.class, children.get(1));
+        Assertions.assertEquals(SyntaxKind.EqualsToken, children.get(1).getKind());
+
+        Assertions.assertInstanceOf(LiteralExpression.class, children.get(2));
+        Assertions.assertEquals(SyntaxKind.LiteralExpression, children.get(2).getKind());
+    }
 }

@@ -21,16 +21,28 @@ public class Parser {
             return new SyntaxTree(null, null, diagnostics);
         }
 
-        ExpressionSyntax expressionSyntax = parseExpression(0);
+        ExpressionSyntax expressionSyntax = parseExpression();
         SyntaxToken eof = matchToken(SyntaxKind.EndOfFileToken);
         return new SyntaxTree(expressionSyntax, eof, diagnostics);
+    }
+
+    private ExpressionSyntax parseAssignmentExpression() {
+        if (current().getKind() == SyntaxKind.IdentifierToken &&
+            peek(1).getKind() == SyntaxKind.EqualsToken) {
+            var identifierToken = matchToken(SyntaxKind.IdentifierToken);
+            var equalsToken = matchToken(SyntaxKind.EqualsToken);
+            var right = parseAssignmentExpression();
+            return new AssignmentExpressionSyntax(identifierToken, equalsToken, right);
+        }
+
+        return parseBinaryExpression(0);
     }
 
     private ExpressionSyntax parsePrimaryExpression() {
         switch (current().getKind()) {
             case OpenParenthesisToken -> {
                 var openParen = matchToken(SyntaxKind.OpenParenthesisToken);
-                var innerExpr = parseExpression(0);
+                var innerExpr = parseBinaryExpression(0);
                 var closeParen = matchToken(SyntaxKind.CloseParenthesisToken);
                 return new ParenthesizedExpression(openParen, innerExpr, closeParen);
             }
@@ -42,19 +54,27 @@ public class Parser {
                 var booleanToken = nextToken();
                 return new LiteralExpression(booleanToken);
             }
+            case IdentifierToken -> {
+                var identifierToken = matchToken(SyntaxKind.IdentifierToken);
+                return new NameExpressionSyntax(identifierToken);
+            }
             default -> {
                 return new LiteralExpression(matchToken(SyntaxKind.LiteralExpression));
             }
         }
     }
 
-    private ExpressionSyntax parseExpression(int parentPrecedence) {
+    private ExpressionSyntax parseExpression() {
+        return parseAssignmentExpression();
+    }
+
+    private ExpressionSyntax parseBinaryExpression(int parentPrecedence) {
         ExpressionSyntax left;
 
         int unaryOperatorPrecedence = SyntaxTraits.getUnaryOperatorPrecedence(current().getKind());
         if (unaryOperatorPrecedence > 0 && unaryOperatorPrecedence >= parentPrecedence) {
             SyntaxToken operatorToken = nextToken();
-            ExpressionSyntax operand = parseExpression(unaryOperatorPrecedence);
+            ExpressionSyntax operand = parseBinaryExpression(unaryOperatorPrecedence);
             left = new UnaryExpression(operatorToken, operand);
         } else {
             left = parsePrimaryExpression();
@@ -65,7 +85,7 @@ public class Parser {
             if (operatorPrecedence <= parentPrecedence || operatorPrecedence == 0)
                 break;
             SyntaxToken operatorToken = nextToken();
-            ExpressionSyntax right = parseExpression(operatorPrecedence);
+            ExpressionSyntax right = parseBinaryExpression(operatorPrecedence);
             left = new BinaryExpression(left, operatorToken, right);
         }
 

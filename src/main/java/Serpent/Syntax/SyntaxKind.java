@@ -8,11 +8,12 @@ public enum SyntaxKind {
     SlashToken("/"),
     OpenParenthesisToken("("),
     CloseParenthesisToken(")"),
+    CaretToken("^"),
+    BangToken("!"),
+    EqualsToken("="),
     NumberToken,
     IdentifierToken,
     WhitespaceToken,
-    CaretToken("^"),
-    BangToken("!"),
 
     FalseKeyword("false"),
     TrueKeyword("true"),
@@ -21,12 +22,15 @@ public enum SyntaxKind {
     LiteralExpression,
     ParenthesizedExpression,
     UnaryExpression,
+    AssignmentExpression,
+    NameExpression,
 
-    EndOfFileToken,
     AmpersandAmpersandToken("&&"),
     BarBarToken("||"),
     EqualsEqualsToken("=="),
-    BangEqualsToken("!=");
+    BangEqualsToken("!="),
+
+    EndOfFileToken;
 
     public final String text;
 
