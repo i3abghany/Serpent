@@ -102,8 +102,8 @@ public class ParserTest {
     @Test
     void testConsumedTokens() {
         String expr = "(true && false) || 123  +    456";
-        Parser parser = new Parser(expr);
-        parser.parse();
+        var parser = new Parser(expr);
+        var ast = parser.parse();
 
         var tokens = parser.getTokenArray();
 
@@ -117,10 +117,13 @@ public class ParserTest {
             new SyntaxToken(expr.indexOf("123"), SyntaxKind.NumberToken, "123", 123),
             new SyntaxToken(expr.indexOf("+"), SyntaxKind.PlusToken, "+", null),
             new SyntaxToken(expr.indexOf("456"), SyntaxKind.NumberToken, "456", 456),
+            new SyntaxToken(expr.length(), SyntaxKind.EndOfFileToken, "\0", null),
         };
 
         for (int i = 0; i < expectedTokens.length; i++) {
             Assertions.assertEquals(expectedTokens[i], tokens[i]);
         }
+
+        Assertions.assertEquals(ast.getEofToken(), expectedTokens[expectedTokens.length - 1]);
     }
 }
