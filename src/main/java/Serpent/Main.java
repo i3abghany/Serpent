@@ -21,6 +21,10 @@ public class Main {
             System.out.print(prompt);
             String line = scanner.nextLine().trim();
 
+            if (line.isEmpty()) {
+                continue;
+            }
+
             if (line.startsWith(commandPrefix)) {
                 handleCommand(line);
                 printAndClearDiagnostics(line);
