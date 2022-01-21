@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {
     private final static String prompt = "> ";
-    private final static String commandPrefix = "@";
+    private final static String commandPrefix = ".";
     private static DiagnosticList diagnostics = new DiagnosticList();
     private static final HashMap<String, Object> variables = new HashMap<>();
     private static boolean printTree = false;
@@ -58,14 +58,14 @@ public class Main {
 
     private static void handleCommand(String line) throws IOException {
         switch (line) {
-            case "@exit":
+            case ".exit":
                 System.exit(0);
-            case "@cls":
+            case ".cls":
                 if (System.getProperty("os.name").contains("Windows")) {
                     Runtime.getRuntime().exec("cls");
                 }
                 break;
-            case "@printTree":
+            case ".printTree":
                 printTree = !printTree;
                 break;
             default:
