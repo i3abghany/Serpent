@@ -39,14 +39,6 @@ public class Lexer {
         if (position >= text.length())
             return new SyntaxToken(position, SyntaxKind.EndOfFileToken, "\0", null);
 
-        if (Character.isDigit(current())) {
-            return lexInteger();
-        } else if (Character.isWhitespace(current())) {
-            return lexWhitespace();
-        } else if (Character.isLetter(current())) {
-            return lexTextualToken();
-        }
-
         String currentChar = Character.toString(current());
         switch (current()) {
             case '*':
@@ -92,6 +84,14 @@ public class Lexer {
                 } else {
                     return new SyntaxToken(position++, SyntaxKind.EqualsToken, "=", null);
                 }
+            }
+            default: {
+                if (Character.isDigit(current()))
+                    return lexInteger();
+                else if (Character.isWhitespace(current()))
+                    return lexWhitespace();
+                else if (Character.isLetter(current()))
+                    return lexTextualToken();
             }
         }
 
