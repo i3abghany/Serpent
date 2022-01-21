@@ -34,6 +34,9 @@ public class Main {
             Parser parser = new Parser(line);
             SyntaxTree ast = parser.parse();
 
+            if (printTree)
+                System.out.println(ast.toString());
+
             var evaluationResult = new Compilation(ast, variables).evaluate();
             diagnostics = evaluationResult.getDiagnostics();
 
