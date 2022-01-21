@@ -103,7 +103,6 @@ public class Parser {
                 tokens.add(token);
         } while (token.getKind() != SyntaxKind.EndOfFileToken);
 
-        tokens.add(token);
         diagnostics.addAll(lexer.getDiagnostics());
         this.tokenArray = tokens.toArray(SyntaxToken[]::new);
     }
