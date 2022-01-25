@@ -38,10 +38,10 @@ public class Main {
                 System.out.println(ast.toString());
 
             var evaluationResult = new Compilation(ast, variables).evaluate();
-            diagnostics = evaluationResult.getDiagnostics();
+            diagnostics = evaluationResult.diagnostics();
 
             if (diagnostics.isEmpty()) {
-                System.out.println(evaluationResult.getValue());
+                System.out.println(evaluationResult.value());
                 continue;
             }
 
